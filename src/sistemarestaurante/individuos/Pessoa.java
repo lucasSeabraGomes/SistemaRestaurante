@@ -83,14 +83,4 @@ public class Pessoa {
         return this.sexoMasculino;
     }
 }
-public class Funcionario extends Pessoa{
-    private String carteiraDeTrabalho;
-    void setCarteiraDeTrabalho(String este)
-    {
-        this.carteiraDeTrabalho=este;
-    }
-    String getCarteiraDeTrabalho()
-    {
-        return this.carteiraDeTrabalho;
-    }
-}
+
