@@ -1,5 +1,6 @@
-//package sistemarestaurante.ferramentas;
-//import ConexaoPostgres.*;
+package sistemarestaurante;
+import sistemarestaurante.ferramentas.*;
+//import java.sql.ResultSet;
 
 public class TestConexaoPostgres {
     public static void main(String[] args) {

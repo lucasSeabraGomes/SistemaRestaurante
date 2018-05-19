@@ -1,4 +1,4 @@
-//package sistemarestaurante.ferramentas;
+package sistemarestaurante.ferramentas;
 import java.sql.*;
 
 /*
@@ -22,7 +22,7 @@ public class ConexaoPostgres {
     public ConexaoPostgres(String local, String porta, String database, String usuario, String senha){
         configDatabase( local, porta, database );
         configUsuario( usuario, senha );
-        setDriverjdbc( ".postgresql.Driver" );
+        setDriverjdbc( "org.postgresql.Driver" );
     }
 
     /*
@@ -45,7 +45,7 @@ public class ConexaoPostgres {
     */
     public void conectar(){
 		try {
-			//Class.forName( getDriverjdbc() );
+			Class.forName( getDriverjdbc() );
 			setPostgres( DriverManager.getConnection( getConexao(), getUsuario(), getSenha() ) );
 			setStatment( getPostgres().createStatement() );
         }
