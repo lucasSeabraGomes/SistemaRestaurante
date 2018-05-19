@@ -96,7 +96,7 @@ public class Funcionario extends Pessoa{
     {
         return this.carteiraDeTrabalho;
     }
-    private void setSenha(String senha)
+    private void setSenha(String este)
     {
         this.senha=este;
     }
