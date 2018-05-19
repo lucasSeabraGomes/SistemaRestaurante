@@ -85,12 +85,39 @@ public class Pessoa {
 }
 public class Funcionario extends Pessoa{
     private String carteiraDeTrabalho;
-    void setCarteiraDeTrabalho(String este)
+    private String senha;
+    private double salario;
+    private boolean turnoDiurno;
+    protected void setCarteiraDeTrabalho(String este)
     {
         this.carteiraDeTrabalho=este;
     }
-    String getCarteiraDeTrabalho()
+    protected String getCarteiraDeTrabalho()
     {
         return this.carteiraDeTrabalho;
+    }
+    private void setSenha(String senha)
+    {
+        this.senha=este;
+    }
+    private String getSenha()
+    {
+        return this.senha;
+    }
+    protected void setSalario(double este)
+    {
+        this.salario=este;
+    }
+    protected double getSalario()
+    {
+        return this.salario;
+    }
+    protected void setTurno(boolean este)
+    {
+        this.turnoDiurno=este;
+    }
+    protected boolean getTurno()
+    {
+        return this.turnoDiurno;
     }
 }
