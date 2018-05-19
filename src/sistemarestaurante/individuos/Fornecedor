@@ -35,7 +35,7 @@ public class Fornecedor {
     /**
      * @return the nome
      */
-    public String getNome() {
+    public String getNomeFornecedor() {
         return this.nomeFornecedor;
     }
 
