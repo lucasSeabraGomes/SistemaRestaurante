@@ -1,0 +1,11 @@
+﻿CREATE TABLE pessoas(
+	cpf VARCHAR(11) PRIMARY KEY,
+	nome VARCHAR(50) NOT NULL,
+	endereco VARCHAR(30),
+	email VARCHAR(30),
+	telefone VARCHAR(12),
+	sexo_masculino BOOLEAN NOT NULL
+	);
+
+SELECT * FROM pessoas;
+	
