@@ -65,7 +65,7 @@ public class ConexaoPostgres {
 		}
     }
     
-    public ResultSet query(String query){
+    public ResultSet execQuery(String query){
 		try {
 			return getStatment().executeQuery(query);
 		}catch (SQLException ex) {
