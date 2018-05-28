@@ -1,11 +1,26 @@
 package sistemarestaurante;
 
+ import java.io.*;
 public class Pagamento {
     private int codigoDosProdutosPedidos[];
+    private int quantiaDeProdutos[];
     private String mensagem;
     private int CodigoDaMesa;
     private String cpfGarçom;
-    
+    void CriarNotaEmTxt()throws IOException
+    {
+        File file = new File( "c:\\NotaFiscal.txt" );
+        if(file.exists())
+        {
+        // apaga o arquivo caso ja exista evitando erros na nota uma vez que ela não sera armazenada.
+             file.delete();
+        }
+        String nomesProdutos[]=new String[this.codigoDosProdutosPedidos.length];
+         FileWriter arq = new FileWriter("c:\\NotaFiscal.txt");
+         PrintWriter gravarArq = new PrintWriter(arq);
+         
+         arq.close();
+    };
     /**
      * @return the codigoDosProdutosPedidos
      */
@@ -61,4 +76,19 @@ public class Pagamento {
     public void setCpfGarçom(String cpfGarçom) {
         this.cpfGarçom = cpfGarçom;
     }
+
+    /**
+     * @return the quantiaDeProdutos
+     */
+    public int[] getQuantiaDeProdutos() {
+        return quantiaDeProdutos;
+    }
+
+    /**
+     * @param quantiaDeProdutos the quantiaDeProdutos to set
+     */
+    public void setQuantiaDeProdutos(int[] quantiaDeProdutos) {
+        this.quantiaDeProdutos = quantiaDeProdutos;
+    }
 }
+
