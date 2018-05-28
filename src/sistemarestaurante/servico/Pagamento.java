@@ -6,7 +6,7 @@ public class Pagamento {
     private int quantiaDeProdutos[];
     private String mensagem;
     private int CodigoDaMesa;
-    private String cpfGarçom;
+    private String cpfGarcom;
     void CriarNotaEmTxt()throws IOException
     {
         File file = new File( "c:\\NotaFiscal.txt" );
@@ -66,15 +66,15 @@ public class Pagamento {
     /**
      * @return the cpfGarçom
      */
-    public String getCpfGarçom() {
-        return cpfGarçom;
+    public String getCpfGarcom() {
+        return cpfGarcom;
     }
 
     /**
-     * @param cpfGarçom the cpfGarçom to set
+     * @param cpfGarcom the cpfGarçom to set
      */
-    public void setCpfGarçom(String cpfGarçom) {
-        this.cpfGarçom = cpfGarçom;
+    public void setCpfGarçom(String cpfGarcom) {
+        this.cpfGarcom = cpfGarcom;
     }
 
     /**
@@ -91,4 +91,3 @@ public class Pagamento {
         this.quantiaDeProdutos = quantiaDeProdutos;
     }
 }
-
