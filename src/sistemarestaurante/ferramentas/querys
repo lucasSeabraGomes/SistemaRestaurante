@@ -8,4 +8,27 @@
 	);
 
 SELECT * FROM pessoas;
-	
+
+CREATE TABLE ingredientes(
+	codigo SERIAL PRIMARY KEY,
+	nome VARCHAR(50) NOT NULL,
+	qtd_estoque INT NOT NULL DEFAULT 0
+	);
+
+SELECT * FROM ingredientes;
+
+INSERT INTO ingredientes(nome, qtd_estoque) VALUES('Agua', 10);
+
+UPDATE ingredientes SET qtd_estoque = qtd_estoque + 2 WHERE codigo = 1;
+
+CREATE TABLE produtos(
+	codigo SERIAL PRIMARY KEY,
+	nome VARCHAR(50) NOT NULL,
+	lista_ingredientes INT[],
+	qtd_ingrediente INT[]
+);
+
+SELECT * FROM produtos;
+
+INSERT INTO produtos(nome) VALUES('Lasanha');
+
