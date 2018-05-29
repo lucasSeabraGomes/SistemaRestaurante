@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package sistemarestaurante.individuos;
-
+import sistemarestaurante.estoque.Ingrediente;
 /**
  *
  * @author lucas seabra
@@ -15,8 +15,8 @@ public class Fornecedor {
     private String enderecoFornecedor;
     private String emailFornecedor;
     private String telefoneFornecedor;
-    private int[]quantidadeDisponivelDeIngredientes;
-    private int[]precoDosIngredientes;
+    private int[][]quantidadeDisponivelDeIngredientes;
+    private float[]precoDosIngredientes;
 
     /**
      * @return the cnpj
@@ -91,14 +91,14 @@ public class Fornecedor {
     /**
      * @return the quantidadeDisponivelDeIngredientes
      */
-    public int[] getQuantidadeDisponivelDeIngredientes() {
+    public int[][] getQuantidadeDisponivelDeIngredientes() {
         return quantidadeDisponivelDeIngredientes;
     }
 
     /**
      * @param quantidadeDisponivelDeIngredientes the quantidadeDisponivelDeIngredientes to set
      */
-    public void setQuantidadeDisponivelDeIngredientes(int[] quantidadeDisponivelDeIngredientes) {
+    public void setQuantidadeDisponivelDeIngredientes(int[][] quantidadeDisponivelDeIngredientes) {
         this.quantidadeDisponivelDeIngredientes = quantidadeDisponivelDeIngredientes;
     }
 
@@ -114,5 +114,19 @@ public class Fornecedor {
      */
     public void setPrecoDosIngredientes(int[] precoDosIngredientes) {
         this.precoDosIngredientes = precoDosIngredientes;
+    }
+    public void verificaDisponibilidadeEPreco(Ingrediente[]estes)
+    {
+        int i;
+        this.quantidadeDisponivelDeIngredientes=new int[estes.length][2];
+        for(i=0;i<estes.length;i++)
+        {
+            Scanner input = new Scanner(System.in);
+            this.quantidadeDisponivelDeIngredientes[i][1]=estes[i].getIdentificadorDoIngrediente();
+            System.out.printf("digite a quantidade disponivel de:%s no fornecedor %s\n",estes[i].getNomeIngrediente(),this.nomeFornecedor);
+            this.quantidadeDisponivelDeIngredientes[i][2] = input.nextInt();
+            System.out.printf("digite o preço de:%s no fornecedor %s\n",estes[i].getNomeIngrediente(),this.nomeFornecedor);
+            this.precoDosIngredientes[i]=input.nextFloat();
+        }
     }
 }
