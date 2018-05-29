@@ -1,0 +1,118 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package sistemarestaurante.individuos;
+
+/**
+ *
+ * @author lucas seabra
+ */
+public class Fornecedor {
+    private String cnpj;
+    private String nomeFornecedor;
+    private String enderecoFornecedor;
+    private String emailFornecedor;
+    private String telefoneFornecedor;
+    private int[]quantidadeDisponivelDeIngredientes;
+    private int[]precoDosIngredientes;
+
+    /**
+     * @return the cnpj
+     */
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    /**
+     * @param cnpj the cnpj to set
+     */
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    /**
+     * @return the nome
+     */
+    public String getNomeFornecedor() {
+        return this.nomeFornecedor;
+    }
+
+    /**
+     * @param nome the nome to set
+     */
+    public void setNomeFornecedor(String nome) {
+        this.nomeFornecedor = nome;
+    }
+
+    /**
+     * @return the endereco
+     */
+    public String getEnderecoFornecedor() {
+        return enderecoFornecedor;
+    }
+
+    /**
+     * @param endereco the endereco to set
+     */
+    public void setEnderecoFornecedor(String endereco) {
+        this.enderecoFornecedor = endereco;
+    }
+
+    /**
+     * @return the email
+     */
+    public String getEmailFornecedor() {
+        return this.emailFornecedor;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmailFornecedor(String email) {
+        this.emailFornecedor = email;
+    }
+
+    /**
+     * @return the telefone
+     */
+    public String getTelefoneFornecedor() {
+        return this.telefoneFornecedor;
+    }
+
+    /**
+     * @param telefone the telefone to set
+     */
+    public void setTelefoneFornecedor(String telefone) {
+        this.telefoneFornecedor = telefone;
+    }
+
+    /**
+     * @return the quantidadeDisponivelDeIngredientes
+     */
+    public int[] getQuantidadeDisponivelDeIngredientes() {
+        return quantidadeDisponivelDeIngredientes;
+    }
+
+    /**
+     * @param quantidadeDisponivelDeIngredientes the quantidadeDisponivelDeIngredientes to set
+     */
+    public void setQuantidadeDisponivelDeIngredientes(int[] quantidadeDisponivelDeIngredientes) {
+        this.quantidadeDisponivelDeIngredientes = quantidadeDisponivelDeIngredientes;
+    }
+
+    /**
+     * @return the precoDosIngredientes
+     */
+    public int[] getPrecoDosIngredientes() {
+        return precoDosIngredientes;
+    }
+
+    /**
+     * @param precoDosIngredientes the precoDosIngredientes to set
+     */
+    public void setPrecoDosIngredientes(int[] precoDosIngredientes) {
+        this.precoDosIngredientes = precoDosIngredientes;
+    }
+}
