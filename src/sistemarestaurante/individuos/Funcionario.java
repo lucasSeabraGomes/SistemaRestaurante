@@ -1,3 +1,5 @@
+package sistemarestaurante.individuos;
+
 public class Funcionario extends Pessoa{
     private String carteiraDeTrabalho;
     private String senha;

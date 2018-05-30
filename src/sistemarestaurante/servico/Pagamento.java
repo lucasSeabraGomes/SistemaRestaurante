@@ -1,4 +1,4 @@
-package sistemarestaurante;
+package sistemarestaurante.servico;
 
  import java.io.*;
 public class Pagamento {
@@ -73,7 +73,7 @@ public class Pagamento {
     /**
      * @param cpfGarcom the cpfGarçom to set
      */
-    public void setCpfGarçom(String cpfGarcom) {
+    public void setCpfGarcom(String cpfGarcom) {
         this.cpfGarcom = cpfGarcom;
     }
 
