@@ -18,6 +18,9 @@ CREATE TABLE ingredientes(
 SELECT * FROM ingredientes;
 
 INSERT INTO ingredientes(nome, qtd_estoque) VALUES('Agua', 10);
+INSERT INTO ingredientes(nome, qtd_estoque) VALUES('Sal', 20);
+INSERT INTO ingredientes(nome, qtd_estoque) VALUES('Arroz', 20);
+INSERT INTO ingredientes(nome, qtd_estoque) VALUES('Tempero', 20);
 
 UPDATE ingredientes SET qtd_estoque = qtd_estoque + 2 WHERE codigo = 1;
 
@@ -25,10 +28,21 @@ CREATE TABLE produtos(
 	codigo SERIAL PRIMARY KEY,
 	nome VARCHAR(50) NOT NULL,
 	lista_ingredientes INT[],
-	qtd_ingrediente INT[]
+	qtd_ingredientes INT[]
 );
 
 SELECT * FROM produtos;
 
-INSERT INTO produtos(nome) VALUES('Lasanha');
+INSERT INTO produtos(nome, lista_ingredientes, qtd_ingredientes) VALUES('Arroz', ARRAY[1,2,3,4], ARRAY[2,2,1,1]);
+
+CREATE TABLE pedidos(
+	codigo SERIAL PRIMARY KEY,
+	codigo_mesa INT NOT NULL,
+	cpf_garcom VARCHAR(11),
+	lista_produtos INT[],
+	qtd_produtos INT[],
+	pedido_pronto BOOLEAN DEFAULT false
+);
+
+SELECT * FROM pedidos;
 
