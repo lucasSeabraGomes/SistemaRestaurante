@@ -34,7 +34,7 @@ public class Ingrediente{
         try {
             ResultSet rs = stmt.executeQuery();
 
-            System.out.printf("\n\n Codigo\t| Nome\t\t| Quantidade em estoque |\n");
+            System.out.printf("\n\n Codigo\t| Nome\t\t| Quantidade em estoque \n");
 
             while(rs.next()){
                 int codigo = rs.getInt("codigo");
@@ -52,6 +52,32 @@ public class Ingrediente{
             stmt.close();
             con.close();
         }
+    }
+
+    public static int checaEstoque(int codigo) throws SQLException{
+        Connection con = new ConnectionFactory().getConexao();
+        String query = "SELECT qtd_estoque FROM ingredientes WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(query);
+        int qtdEstoque = -1;
+
+        stmt.setInt(1, codigo);
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()){
+                qtdEstoque = rs.getInt("qtd_estoque");
+            }
+
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+        return qtdEstoque;
     }
 
 	/**
