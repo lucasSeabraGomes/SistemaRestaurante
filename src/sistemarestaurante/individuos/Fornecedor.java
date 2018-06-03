@@ -125,7 +125,7 @@ public class Fornecedor {
             this.quantidadeDisponivelDeIngredientes[i][1]=estes[i].getCogigo();
             System.out.printf("digite a quantidade disponivel de:%s no fornecedor %s\n",estes[i].getNome(),this.nomeFornecedor);
             this.quantidadeDisponivelDeIngredientes[i][2] = input.nextInt();
-            System.out.printf("digite o preço de:%s no fornecedor %s\n",estes[i].getNomeIngrediente(),this.nomeFornecedor);
+            System.out.printf("digite o preço de:%s no fornecedor %s\n",estes[i].getNome(),this.nomeFornecedor);
             preco[i]=input.nextFloat();
         }
     }
