@@ -1,5 +1,6 @@
 package sistemarestaurante.individuos;
-
+import sistemarestaurante.estoque.produto.java
+import sistemarestaurante.estoque.ingrediente.java
 public class Funcionario extends Pessoa{
     private String carteiraDeTrabalho;
     private String senha;
@@ -36,5 +37,16 @@ public class Funcionario extends Pessoa{
     protected boolean getTurno()
     {
         return this.turnoDiurno;
+    }
+    protected boolean verificaSenha(String cpf,String senha)
+    {
+        if(buscaSenha(cpf)==senha)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
