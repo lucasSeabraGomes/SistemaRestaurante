@@ -1,6 +1,7 @@
 package sistemarestaurante.servico;
 
  import java.io.*;
+import sistemarestaurante.estoque.produto.java
 public class Pagamento {
     private int codigoDosProdutosPedidos[];
     private int quantiaDeProdutos[];
@@ -9,6 +10,8 @@ public class Pagamento {
     private String cpfGarcom;
     void CriarNotaEmTxt()throws IOException
     {
+        Produto este=new Produto();
+        float resultado=0;
         File file = new File( "c:\\NotaFiscal.txt" );
         if(file.exists())
         {
@@ -18,7 +21,13 @@ public class Pagamento {
         String nomesProdutos[]=new String[this.codigoDosProdutosPedidos.length];
          FileWriter arq = new FileWriter("c:\\NotaFiscal.txt");
          PrintWriter gravarArq = new PrintWriter(arq);
-         
+         for(i=0;i<this.codigoDosProdutosPedidos.length)
+         {
+             gravarArq.printf("%dx%s=%f\n",this.quantiaDeProdutos[i],este.buscaNome(this.codigoDosProdutosPedidos[i]),this.quantiaDeProdutos[i]*este.buscaPreco(this.codigoDosProdutosPedidos[i]));
+             rusultado=,this.quantiaDeProdutos[i]*este.buscaPreco(this.codigoDosProdutosPedidos[i]);
+         }
+         gravarArq.printf("total:%f",resultado);
+         gravarArq.printf("%s",this.mensagem);
          arq.close();
     };
     /**
