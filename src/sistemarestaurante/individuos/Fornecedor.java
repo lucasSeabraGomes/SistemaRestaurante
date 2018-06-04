@@ -5,6 +5,7 @@
  */
 package sistemarestaurante.individuos;
 import sistemarestaurante.estoque.Ingrediente;
+import java.util.Scanner;//Import da classe Scanner
 /**
  *
  * @author lucas seabra
@@ -105,28 +106,29 @@ public class Fornecedor {
     /**
      * @return the precoDosIngredientes
      */
-    public int[] getPrecoDosIngredientes() {
+    public float[] getPrecoDosIngredientes() {//correção do tipo da matriz de int para float
         return precoDosIngredientes;
     }
 
     /**
      * @param precoDosIngredientes the precoDosIngredientes to set
      */
-    public void setPrecoDosIngredientes(int[] precoDosIngredientes) {
+    public void setPrecoDosIngredientes(float[] precoDosIngredientes) {//correção do tipo da matriz de int para float
         this.precoDosIngredientes = precoDosIngredientes;
     }
     public void verificaDisponibilidadeEPreco(Ingrediente[]estes)
     {
         int i;
         this.quantidadeDisponivelDeIngredientes=new int[estes.length][2];
+        Scanner input = new Scanner(System.in);//Criação do objeto Scanner fora do loop para não criar o Scanner várias vezes
         for(i=0;i<estes.length;i++)
         {
-            Scanner input = new Scanner(System.in);
-            this.quantidadeDisponivelDeIngredientes[i][1]=estes[i].getCogigo();
+            this.quantidadeDisponivelDeIngredientes[i][1]=estes[i].getCodigo();//Correção do nome da função
             System.out.printf("digite a quantidade disponivel de:%s no fornecedor %s\n",estes[i].getNome(),this.nomeFornecedor);
             this.quantidadeDisponivelDeIngredientes[i][2] = input.nextInt();
             System.out.printf("digite o preço de:%s no fornecedor %s\n",estes[i].getNome(),this.nomeFornecedor);
-            preco[i]=input.nextFloat();
+            precoDosIngredientes[i]=input.nextFloat();//Correção do nome da variável referetne aos preços
         }
+        input.close();//Fechando o Scanner para evitar "resource leak"
     }
 }

@@ -1,7 +1,8 @@
 package sistemarestaurante.servico;
 
- import java.io.*;
-import sistemarestaurante.estoque.produto.java
+import java.io.*;
+import sistemarestaurante.estoque.Produto;//Correção no import da classe
+
 public class Pagamento {
     private int codigoDosProdutosPedidos[];
     private int quantiaDeProdutos[];
@@ -21,10 +22,10 @@ public class Pagamento {
         String nomesProdutos[]=new String[this.codigoDosProdutosPedidos.length];
          FileWriter arq = new FileWriter("c:\\NotaFiscal.txt");
          PrintWriter gravarArq = new PrintWriter(arq);
-         for(i=0;i<this.codigoDosProdutosPedidos.length)
+         for(int i=0;i<this.codigoDosProdutosPedidos.length;i++)//"Correção" na declaração do laço
          {
              gravarArq.printf("%dx%s=%f\n",this.quantiaDeProdutos[i],este.buscaNome(this.codigoDosProdutosPedidos[i]),this.quantiaDeProdutos[i]*este.buscaPreco(this.codigoDosProdutosPedidos[i]));
-             rusultado=,this.quantiaDeProdutos[i]*este.buscaPreco(this.codigoDosProdutosPedidos[i]);
+             resultado=this.quantiaDeProdutos[i]*este.buscaPreco(this.codigoDosProdutosPedidos[i]);//Exclusão de uma virgula (colocada por engano imagino) e correção da variável
          }
          gravarArq.printf("total:%f",resultado);
          gravarArq.printf("%s",this.mensagem);
