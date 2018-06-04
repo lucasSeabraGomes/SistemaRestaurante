@@ -2,6 +2,7 @@ package sistemarestaurante.servico;
 
 import java.io.*;
 import sistemarestaurante.estoque.Produto;//Correção no import da classe
+import java.sql.SQLException;//Import da SQLException para a função CriarNota
 
 public class Pagamento {
     private int codigoDosProdutosPedidos[];
@@ -9,8 +10,8 @@ public class Pagamento {
     private String mensagem;
     private int CodigoDaMesa;
     private String cpfGarcom;
-    void CriarNotaEmTxt()throws IOException
-    {
+    
+    void CriarNotaEmTxt()throws IOException, SQLException { //Correção do erro referente à SQLException
         Produto este=new Produto();
         float resultado=0;
         File file = new File( "c:\\NotaFiscal.txt" );
@@ -30,7 +31,8 @@ public class Pagamento {
          gravarArq.printf("total:%f",resultado);
          gravarArq.printf("%s",this.mensagem);
          arq.close();
-    };
+    }
+
     /**
      * @return the codigoDosProdutosPedidos
      */
