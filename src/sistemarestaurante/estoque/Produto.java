@@ -12,6 +12,7 @@ import sistemarestaurante.ferramentas.ConnectionFactory;
 public class Produto{
     private int codigo;
     private String nome;
+    private float preco;
     private ArrayList<Integer> listaIngredientes = new ArrayList<Integer>();
     private ArrayList<Integer> qtdCadaIngrediente = new ArrayList<Integer>();
     
@@ -84,6 +85,58 @@ public class Produto{
         }
     }
 
+    public static String buscaNome(int codigo) throws SQLException{
+        Connection con = new ConnectionFactory().getConexao();
+        String query = "SELECT nome FROM produtos WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(query);
+        String nome = null;
+
+        stmt.setInt(1, codigo);
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                nome = rs.getString("nome");
+            }
+
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+        return nome;
+    }
+
+    public static float buscaPreco(int codigo) throws SQLException{
+        Connection con = new ConnectionFactory().getConexao();
+        String query = "SELECT preco FROM produtos WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(query);
+        float preco = (float) 0.0;
+
+        stmt.setInt(1, codigo);
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                preco = rs.getFloat("preco");
+            }
+
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+        return preco;
+    }
+
 	/**
      * Métodos de acesso ao banco de dados
      */
@@ -127,6 +180,13 @@ public class Produto{
     public void setNome(String nome) {
 		this.nome = nome;
     }
+    // Variavel preco
+    public float getPreco() {
+		return preco;
+	}
+    public void setPreco(float preco) {
+		this.preco = preco;
+	}
     
     public ArrayList<Integer> getListaIngredientes() {
         return listaIngredientes;
@@ -134,4 +194,6 @@ public class Produto{
     public ArrayList<Integer> getQtdCadaIngrediente() {
         return qtdCadaIngrediente;
     }
+
+	
 }
