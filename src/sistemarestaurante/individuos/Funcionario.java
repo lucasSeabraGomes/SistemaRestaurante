@@ -5,6 +5,7 @@ public class Funcionario extends Pessoa{
     private String senha;
     private double salario;
     private boolean turnoDiurno;
+    private int cargo;//varia de 1 a 4 sendo 1-gerente,2-garçom,3-cozinheiro,4-barman;
     protected void setCarteiraDeTrabalho(String este)
     {
         this.carteiraDeTrabalho=este;
@@ -16,6 +17,14 @@ public class Funcionario extends Pessoa{
     private void setSenha(String este)
     {
         this.senha=este;
+    }
+    protected int getCargo()
+    {
+        return this.cargo;
+    }
+    private void setCargo(int este)
+    {
+        this.cargo=este;
     }
     private String getSenha()
     {
