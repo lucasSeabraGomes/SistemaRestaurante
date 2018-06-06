@@ -13,56 +13,32 @@ import sistemarestaurante.ferramentas.ConnectionFactory;
 public class Pedido{
     private int codigo;
     private int codigoMesa;
+    private String cpfCliente;
     private String cpfGarcom;
     private ArrayList<Integer> produtosPedidos = new ArrayList<Integer>();
     private ArrayList<Integer> qtdProdutosPedidos = new ArrayList<Integer>();
+    private double precoTotal;
     private boolean pedidoPronto;
+    private boolean pedidoPago;
     
     /**
      * Método para adicionar produto ao pedido da mesa
      */
-    public void addItemPedido(int codigoProduto, int quantidade){
-        produtosPedidos.add(codigoProduto);
-        qtdProdutosPedidos.add(quantidade);
+    public void addItemPedido(int codigoProduto, int quantidade) throws SQLException {
+        if(Produto.verificaPossuiEstoque(codigoProduto, quantidade)){
+            produtosPedidos.add(codigoProduto);
+            qtdProdutosPedidos.add(quantidade);
+            precoTotal = precoTotal + Produto.buscaPreco(codigoProduto);
+        }
+        else{
+            System.out.printf("Nao ha estoque para o produto %s!", Produto.buscaNome(codigoProduto));
+        }
 	}
 
 	/**
      * Métodos de classe
      */
-    public static void finalizaPedido(int codigo) throws SQLException{
-        Connection con = new ConnectionFactory().getConexao();
-        String sql = "SELECT * FROM pedidos WHERE codigo = ?;";
-        PreparedStatement stmt = con.prepareStatement(sql);
-
-        stmt.setInt(1, codigo);
-
-        try {
-            ResultSet rs = stmt.executeQuery();
-
-            while(rs.next()){
-                Array a = rs.getArray("lista_produtos");
-                Integer[] codigoProduto = (Integer[]) a.getArray();
-                Array b = rs.getArray("qtd_produtos");
-                Integer[] qtdProduto = (Integer[]) b.getArray();
-                
-                for(int i = 0; i < qtdProduto.length; i++){
-                    Produto.consomeProdutoEstoque(codigoProduto[i]);;
-				}
-				
-			}
-			
-			marcaPedidoPronto(codigo);
-        }
-        catch(SQLException e) {
-            throw new RuntimeException(e);
-        }
-        finally {
-            stmt.close();
-            con.close();
-        }
-	}
-	
-	public static void marcaPedidoPronto(int codigo) throws SQLException{
+    public static void marcaPedidoPronto(int codigo) throws SQLException{
 		Connection con = new ConnectionFactory().getConexao();
         String query = "UPDATE pedidos SET pedido_pronto = true " +
                             "WHERE codigo = ?;";
@@ -80,22 +56,44 @@ public class Pedido{
             stmt.close();
             con.close();
         }
+    }
+    
+    public static void marcaPedidoPago(int codigo) throws SQLException{
+		Connection con = new ConnectionFactory().getConexao();
+        String query = "UPDATE pedidos SET pedido_pago = true " +
+                            "WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(query);
+        
+        stmt.setInt(1, codigo);
+
+        try {
+            stmt.executeUpdate();
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
 	}
-	
+    
 	/**
      * Métodos de acesso ao banco de dados
      */
     public void insereBanco() throws SQLException {
         Connection con = new ConnectionFactory().getConexao();
         String query = "INSERT INTO pedidos " +
-                            "(codigo_mesa, cpf_garcom, lista_produtos, qtd_produtos) " +
-                            "VALUES(?, ?, ?, ?);";
+                            "(codigo_mesa, cpf_cliente, cpf_garcom, lista_produtos, qtd_produtos, preco_total) " +
+                            "VALUES(?, ?, ?, ?, ?, ?);";
         PreparedStatement stmt = con.prepareStatement(query);
         
-		stmt.setInt(1, codigoMesa);
-        stmt.setString(2, cpfGarcom);
-        stmt.setArray(3, con.createArrayOf("integer", produtosPedidos.toArray()));
-        stmt.setArray(4, con.createArrayOf("integer", qtdProdutosPedidos.toArray()));
+        stmt.setInt(1, codigoMesa);
+        stmt.setString(2, cpfCliente);
+        stmt.setString(3, cpfGarcom);
+        stmt.setArray(4, con.createArrayOf("integer", produtosPedidos.toArray()));
+        stmt.setArray(5, con.createArrayOf("integer", qtdProdutosPedidos.toArray()));
+        stmt.setDouble(6, precoTotal);
 
         try {
             stmt.executeUpdate();
@@ -127,6 +125,14 @@ public class Pedido{
 	}
 	public void setCodigoMesa(int codigoMesa) {
 		this.codigoMesa = codigoMesa;
+    }
+    
+    // Variavel cpfCliente
+	public String getCpfCliente() {
+		return cpfCliente;
+	}
+	public void setCpfCliente(String cpfCliente) {
+		this.cpfCliente = cpfCliente;
 	}
     
 	// Variavel cpfGarcom
@@ -145,6 +151,11 @@ public class Pedido{
     //Variavel qtdProdutosPedidos
 	public ArrayList<Integer> getQtdProdutosPedidos() {
 		return qtdProdutosPedidos;
+    }
+    
+    // Variavel precoTotal
+	public double getPrecoTotal() {
+		return precoTotal;
 	}
 
 	// Variavel pedidoPronto
@@ -153,5 +164,13 @@ public class Pedido{
 	}
 	public void setPedidoPronto(boolean pedidoPronto) {
 		this.pedidoPronto = pedidoPronto;
+	}
+
+	// Variavel pedidoPago
+	public boolean isPedidoPago() {
+		return pedidoPago;
+	}
+    public void setPedidoPago(boolean pedidoPago) {
+		this.pedidoPago = pedidoPago;
 	}
 }
