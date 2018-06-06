@@ -39,13 +39,13 @@ public class Produto{
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()){
-                Array a = rs.getArray("lista_ingredientes");
-                Integer[] codigoIngrediente = (Integer[]) a.getArray();
-                Array b = rs.getArray("qtd_ingredientes");
-                Integer[] qtdIngrediente = (Integer[]) b.getArray();
+                Array codProd = rs.getArray("lista_ingredientes");
+                Integer[] codigoIngrediente = (Integer[]) codProd.getArray();
+                Array qtdProd = rs.getArray("qtd_ingredientes");
+                Integer[] qtdIngrediente = (Integer[]) qtdProd.getArray();
                 
                 for(int i = 0; i < codigoIngrediente.length; i++){
-                    if((qtdIngrediente[i] * qtdProduto) < Ingrediente.checaEstoque(codigoIngrediente[i])){
+                    if((qtdIngrediente[i] * qtdProduto) > Ingrediente.checaEstoque(codigoIngrediente[i])){
                         possuiEstoque = false;
                     }
                 }
