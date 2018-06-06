@@ -12,7 +12,7 @@ import sistemarestaurante.ferramentas.ConnectionFactory;
 public class Produto{
     private int codigo;
     private String nome;
-    private float preco;
+    private double preco;
     private ArrayList<Integer> listaIngredientes = new ArrayList<Integer>();
     private ArrayList<Integer> qtdCadaIngrediente = new ArrayList<Integer>();
     
@@ -27,9 +27,44 @@ public class Produto{
     /**
      * Métodos de classe
      */
+    public static boolean verificaPossuiEstoque(int codigo, int qtdProduto) throws SQLException{
+        Connection con = new ConnectionFactory().getConexao();
+        String sql = "SELECT lista_ingredientes, qtd_ingredientes FROM produtos WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        boolean possuiEstoque = true;
+
+        stmt.setInt(1, codigo);
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()){
+                Array a = rs.getArray("lista_ingredientes");
+                Integer[] codigoIngrediente = (Integer[]) a.getArray();
+                Array b = rs.getArray("qtd_ingredientes");
+                Integer[] qtdIngrediente = (Integer[]) b.getArray();
+                
+                for(int i = 0; i < codigoIngrediente.length; i++){
+                    if((qtdIngrediente[i] * qtdProduto) < Ingrediente.checaEstoque(codigoIngrediente[i])){
+                        possuiEstoque = false;
+                    }
+                }
+            }
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+        return possuiEstoque;
+    }
+
+
     public static void consomeProdutoEstoque(int codigo) throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String sql = "SELECT * FROM produtos WHERE codigo = ?;";
+        String sql = "SELECT lista_ingredientes, qtd_ingredientes FROM produtos WHERE codigo = ?;";
         PreparedStatement stmt = con.prepareStatement(sql);
 
         stmt.setInt(1, codigo);
@@ -58,21 +93,23 @@ public class Produto{
         }
     }
 
+
     public static void imprimeProdutos() throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String query = "SELECT * FROM produtos;";
+        String query = "SELECT codigo, nome, preco FROM produtos;";
         PreparedStatement stmt = con.prepareStatement(query);
 
         try {
             ResultSet rs = stmt.executeQuery();
 
-            System.out.printf("\n\nCodigo\t|Nome\t\t\n");
+            System.out.printf("\n\nCodigo\t|Nome\t\t|Preco\n");
 
             while(rs.next()){
                 int codigo = rs.getInt("codigo");
                 String nome = rs.getString("nome");
+                double preco = rs.getDouble("preco");
 
-                System.out.printf("%d\t|%s\t\t\n", codigo, nome);
+                System.out.printf("%d\t|%s\t\t|%.2f\n", codigo, nome, preco);
             }
 
         }
@@ -84,6 +121,7 @@ public class Produto{
             con.close();
         }
     }
+
 
     public static String buscaNome(int codigo) throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
@@ -111,11 +149,12 @@ public class Produto{
         return nome;
     }
 
-    public static float buscaPreco(int codigo) throws SQLException{
+
+    public static double buscaPreco(int codigo) throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
         String query = "SELECT preco FROM produtos WHERE codigo = ?;";
         PreparedStatement stmt = con.prepareStatement(query);
-        float preco = (float) 0.0;
+        double preco = (float) 0.0;
 
         stmt.setInt(1, codigo);
 
@@ -136,6 +175,7 @@ public class Produto{
         }
         return preco;
     }
+
 
 	/**
      * Métodos de acesso ao banco de dados
@@ -181,7 +221,7 @@ public class Produto{
 		this.nome = nome;
     }
     // Variavel preco
-    public float getPreco() {
+    public double getPreco() {
 		return preco;
 	}
     public void setPreco(float preco) {
