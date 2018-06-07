@@ -1,6 +1,5 @@
 package sistemarestaurante.servico;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +19,10 @@ public class Pedido{
     private double precoTotal;
     private boolean pedidoPronto;
     private boolean pedidoPago;
+
+    public Pedido(){
+        precoTotal = 0.0;
+    }
     
     /**
      * Método para adicionar produto ao pedido da mesa
@@ -28,7 +31,7 @@ public class Pedido{
         if(Produto.verificaPossuiEstoque(codigoProduto, quantidade)){
             produtosPedidos.add(codigoProduto);
             qtdProdutosPedidos.add(quantidade);
-            precoTotal = precoTotal + Produto.buscaPreco(codigoProduto);
+            precoTotal = precoTotal + (Produto.buscaPreco(codigoProduto) * quantidade);
         }
         else{
             System.out.printf("Nao ha estoque para o produto %s!", Produto.buscaNome(codigoProduto));
@@ -84,7 +87,7 @@ public class Pedido{
     public void insereBanco() throws SQLException {
         Connection con = new ConnectionFactory().getConexao();
         String query = "INSERT INTO pedidos " +
-                            "(codigo_mesa, cpf_cliente, cpf_garcom, lista_produtos, qtd_produtos, preco_total) " +
+                            "(cod_mesa, cpf_cliente, cpf_garcom, lista_produtos, qtd_produtos, preco_total) " +
                             "VALUES(?, ?, ?, ?, ?, ?);";
         PreparedStatement stmt = con.prepareStatement(query);
         
@@ -106,6 +109,33 @@ public class Pedido{
             con.close();
         }
     }
+
+
+    public static double buscaConta(int codigo) throws SQLException{
+        Connection con = new ConnectionFactory().getConexao();
+        String sql = "SELECT preco_total FROM pedidos WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        double conta = 0.0;
+
+        stmt.setInt(1, codigo);
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                conta = rs.getDouble("preco_total");
+            }
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+        return conta;
+    }
+
     
     /**
      * GET's e SET's das variaveis de classe

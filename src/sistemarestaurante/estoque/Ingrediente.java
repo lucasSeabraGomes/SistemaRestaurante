@@ -28,20 +28,20 @@ public class Ingrediente{
      */
     public static void imprimeEstoque() throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String query = "SELECT * FROM ingredientes;";
-        PreparedStatement stmt = con.prepareStatement(query);
+        String sql = "SELECT codigo, nome, qtd_estoque FROM ingredientes;";
+        PreparedStatement stmt = con.prepareStatement(sql);
 
         try {
             ResultSet rs = stmt.executeQuery();
 
-            System.out.printf("\n\n Codigo\t| Nome\t\t| Quantidade em estoque \n");
+            System.out.printf("\n\n|Codigo\t- Nome\t- Quantidade em estoque| \n");
 
             while(rs.next()){
                 int codigo = rs.getInt("codigo");
                 String nome = rs.getString("nome");
                 int qtdEstoque = rs.getInt("qtd_estoque");
 
-                System.out.printf(" %d\t| %s\t\t| %d\n", codigo, nome, qtdEstoque);
+                System.out.printf("|%d\t- %s\t- %d|\n", codigo, nome, qtdEstoque);
             }
 
         }
@@ -54,10 +54,11 @@ public class Ingrediente{
         }
     }
 
+
     public static int checaEstoque(int codigo) throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String query = "SELECT qtd_estoque FROM ingredientes WHERE codigo = ?;";
-        PreparedStatement stmt = con.prepareStatement(query);
+        String sql = "SELECT qtd_estoque FROM ingredientes WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
         int qtdEstoque = -1;
 
         stmt.setInt(1, codigo);
@@ -85,10 +86,10 @@ public class Ingrediente{
      */
 	public void insereBanco() throws SQLException {
         Connection con = new ConnectionFactory().getConexao();
-        String query = "INSERT INTO ingredientes " +
+        String sql = "INSERT INTO ingredientes " +
                             "(nome, qtd_estoque) " +
                             "VALUES(?,?);";
-        PreparedStatement stmt = con.prepareStatement(query);
+        PreparedStatement stmt = con.prepareStatement(sql);
         
         stmt.setString(1, nome);
         stmt.setInt(2, qtdEstoque);
@@ -107,9 +108,9 @@ public class Ingrediente{
 	
 	public static void aumentaQtdEstoque(int codigo, int qtd) throws SQLException{
 		Connection con = new ConnectionFactory().getConexao();
-        String query = "UPDATE ingredientes SET qtd_estoque = qtd_estoque + ? " +
+        String sql = "UPDATE ingredientes SET qtd_estoque = qtd_estoque + ? " +
                             "WHERE codigo = ?;";
-        PreparedStatement stmt = con.prepareStatement(query);
+        PreparedStatement stmt = con.prepareStatement(sql);
         
         stmt.setInt(1, qtd);
         stmt.setInt(2, codigo);
@@ -128,9 +129,9 @@ public class Ingrediente{
 
 	public static void diminuiQtdEstoque(int codigo, int qtd) throws SQLException{
 		Connection con = new ConnectionFactory().getConexao();
-        String query = "UPDATE ingredientes SET qtd_estoque = qtd_estoque - ? " +
+        String sql = "UPDATE ingredientes SET qtd_estoque = qtd_estoque - ? " +
                             "WHERE codigo = ?;";
-        PreparedStatement stmt = con.prepareStatement(query);
+        PreparedStatement stmt = con.prepareStatement(sql);
         
         stmt.setInt(1, qtd);
         stmt.setInt(2, codigo);

@@ -96,20 +96,20 @@ public class Produto{
 
     public static void imprimeProdutos() throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String query = "SELECT codigo, nome, preco FROM produtos;";
-        PreparedStatement stmt = con.prepareStatement(query);
+        String sql = "SELECT codigo, nome, preco FROM produtos;";
+        PreparedStatement stmt = con.prepareStatement(sql);
 
         try {
             ResultSet rs = stmt.executeQuery();
 
-            System.out.printf("\n\nCodigo\t|Nome\t\t|Preco\n");
+            System.out.printf("\n\n|Codigo\t- Nome\t- Preco|\n");
 
             while(rs.next()){
                 int codigo = rs.getInt("codigo");
                 String nome = rs.getString("nome");
                 double preco = rs.getDouble("preco");
 
-                System.out.printf("%d\t|%s\t\t|%.2f\n", codigo, nome, preco);
+                System.out.printf("|%d\t- %s\t- %.2f|\n", codigo, nome, preco);
             }
 
         }
@@ -125,8 +125,8 @@ public class Produto{
 
     public static String buscaNome(int codigo) throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String query = "SELECT nome FROM produtos WHERE codigo = ?;";
-        PreparedStatement stmt = con.prepareStatement(query);
+        String sql = "SELECT nome FROM produtos WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
         String nome = null;
 
         stmt.setInt(1, codigo);
@@ -152,8 +152,8 @@ public class Produto{
 
     public static double buscaPreco(int codigo) throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String query = "SELECT preco FROM produtos WHERE codigo = ?;";
-        PreparedStatement stmt = con.prepareStatement(query);
+        String sql = "SELECT preco FROM produtos WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
         double preco = (float) 0.0;
 
         stmt.setInt(1, codigo);
@@ -182,10 +182,10 @@ public class Produto{
      */
     public void insereBanco() throws SQLException {
         Connection con = new ConnectionFactory().getConexao();
-        String query = "INSERT INTO produtos " +
+        String sql = "INSERT INTO produtos " +
                             "(nome, lista_ingredientes, qtd_ingredientes) " +
                             "VALUES(?,?,?);";
-        PreparedStatement stmt = con.prepareStatement(query);
+        PreparedStatement stmt = con.prepareStatement(sql);
         
         stmt.setString(1, nome);
         stmt.setArray(2, con.createArrayOf("integer", listaIngredientes.toArray()));
@@ -234,6 +234,4 @@ public class Produto{
     public ArrayList<Integer> getQtdCadaIngrediente() {
         return qtdCadaIngrediente;
     }
-
-	
 }

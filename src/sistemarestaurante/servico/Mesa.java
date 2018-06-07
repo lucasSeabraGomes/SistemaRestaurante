@@ -1,6 +1,12 @@
 package sistemarestaurante.servico;
 
-import sistemarestaurante.servico.Pedido;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import sistemarestaurante.ferramentas.ConnectionFactory;
+import sistemarestaurante.individuos.Cliente;
 
 public class Mesa{
 	private int codigo;
@@ -8,10 +14,85 @@ public class Mesa{
 	private boolean ocupada;
 	private String cpfCliente;
 
+
+	/**
+     * Métodos de acesso ao banco
+     */
+	public static int buscaMesaLivre() throws SQLException {
+		Connection con = new ConnectionFactory().getConexao();
+        String sql = "SELECT codigo FROM mesas WHERE ocupada = false;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        int codigoMesa = 0;
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+            
+            if(rs.next()){
+                codigoMesa = rs.getInt("codigo");
+            }
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+        return codigoMesa;
+	}
+
+
+	public static void ocupaMesa(String cpf, int codigoMesa) throws SQLException {
+		Connection con = new ConnectionFactory().getConexao();
+		String sql = "UPDATE mesas SET ocupada = true, cpf_ocupante = ?" +
+						"WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+
+		stmt.setString(1, cpf);
+		stmt.setInt(2, codigoMesa);
+
+        try {
+			if(stmt.executeUpdate() > 0){
+			
+			System.out.printf("A mesa %d foi ocupada pelo cliente %s, CPF %s.\n",
+								codigoMesa, Cliente.buscaNome(cpf), cpf);
+			}
+		}            
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+	}
+
+
+	public static void desocupaMesa(int codigoMesa) throws SQLException {
+		Connection con = new ConnectionFactory().getConexao();
+		String sql = "UPDATE mesas SET ocupada = false, cpf_ocupante = null" +
+						"WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+
+		stmt.setInt(1, codigoMesa);
+
+        try {
+			stmt.executeUpdate();
+			
+			System.out.printf("A mesa %d foi desocupada.\n", codigoMesa);
+		}            
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+	}
+
     /**
      * GET's e SET's das variaveis de classe
      */
-
 	// Variavel codigo
 	public int getCodigo() {
 		return codigo;

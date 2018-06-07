@@ -1,85 +1,136 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sistemarestaurante.individuos;
 
-/**
- *
- * @author newlo
- */
+import java.util.Date;
+
 public class Pessoa {
     private String cpf;
     private String nome;
-    private String endereco;
-    private String email;
-    private String telefone;
+    private String rg;
+    private Date dataNascimento;
+    private String filiacaoPai;
+    private String filiacaoMae;
+    private String naturalidade;
+    private String estadoCivil;
     private boolean sexoMasculino;
-
-    //Contrutor de classe
-    public Pessoa(String cpf, String nome, String endereco, String email, String telefone, boolean sexoMasculino){
-        setCpf(cpf);
-        setNome(nome);
-        setEndereco(endereco);
-        setEmail(email);
-        setTelefone(telefone);
-        setGenero(sexoMasculino);
-    }
-    public Pessoa(){
-        this(null, null, null, null, null, false);
-    }
-
+    private String telefone;
+    private String email;
+    private String endereco;
+    private String escolaridade;
+    private String profissao;
+    
+    
     /**
-     * todos os sets tem a função de definir o que esta a seguir ex setName-define o nome
-     * todos os get tema função de pegar o valor do que esta a seguir ex getName- recebe o valor de name
+     * GET's e SET's das variaveis de classe
      */
-    protected void setCpf(String este)
-    {
-        this.cpf=este;
-    }
-    protected String getCpf()
-    {
-        return this.cpf;
-    }
-    protected void setNome(String este)
-    {
-        this.nome=este;
-    }
-    protected String getNome()
-    {
-        return this.nome;
-    }
-    protected void setEndereco(String este)
-    {
-        this.endereco=este;
-    }
-    protected String getEndereco()
-    {
-        return this.endereco;
-    }
-    protected void setTelefone(String este)
-    {
-        this.telefone=este;
-    }
-    protected String getTelefone()
-    {
-        return this.telefone;
-    }
-    protected void setEmail(String este)
-    {
-        this.email=este;
-    }
-    protected String getEmail()
-    {
-        return this.email;
-    }
-    protected void setGenero(boolean este)
-    {
-        this.sexoMasculino=este;
-    }
-    protected boolean getGenero()
-    {
-        return this.sexoMasculino;
-    }
+    // Variavel cpf
+	public String getCpf() {
+		return cpf;
+	}
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+    
+    // Variavel nome
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+    
+    // Variavel rg
+	public String getRg() {
+		return rg;
+	}
+	public void setRg(String rg) {
+		this.rg = rg;
+	}
+    
+    // Variavel dataNascimento
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+    
+    // Variavel filiacaoPai
+	public String getFiliacaoPai() {
+		return filiacaoPai;
+	}
+	public void setFiliacaoPai(String filiacaoPai) {
+		this.filiacaoPai = filiacaoPai;
+	}
+    
+    // Variavel filiacaoMae
+	public String getFiliacaoMae() {
+		return filiacaoMae;
+	}
+	public void setFiliacaoMae(String filiacaoMae) {
+		this.filiacaoMae = filiacaoMae;
+	}
+    
+    // Variavel naturalidade
+	public String getNaturalidade() {
+		return naturalidade;
+	}
+	public void setNaturalidade(String naturalidade) {
+		this.naturalidade = naturalidade;
+	}
+    
+    // Variavel estadoCivil
+	public String getEstadoCivil() {
+		return estadoCivil;
+	}
+	public void setEstadoCivil(String estadoCivil) {
+		this.estadoCivil = estadoCivil;
+	}
+    
+    // Variavel sexoMasculino
+	public boolean isSexoMasculino() {
+		return sexoMasculino;
+	}
+	public void setSexoMasculino(boolean sexoMasculino) {
+		this.sexoMasculino = sexoMasculino;
+	}
+    
+    // Variavel telefone
+	public String getTelefone() {
+		return telefone;
+	}
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+    
+    // Variavel email
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+    
+    // Variavel endereco
+	public String getEndereco() {
+		return endereco;
+	}
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+    
+    // Variavel escolaridade
+	public String getEscolaridade() {
+		return escolaridade;
+	}
+	public void setEscolaridade(String escolaridade) {
+		this.escolaridade = escolaridade;
+	}
+    
+    // Variavel profissao
+	public String getProfissao() {
+		return profissao;
+	}
+	public void setProfissao(String profissao) {
+		this.profissao = profissao;
+	}
 }

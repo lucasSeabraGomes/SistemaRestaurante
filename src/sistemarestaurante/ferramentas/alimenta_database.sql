@@ -1,9 +1,18 @@
 ﻿-- Inserção de cargos
 INSERT INTO public.cargos
-    VALUES (1, 'Gerente'),
+    VALUES  (1, 'Gerente'),
             (2, 'Garcom'),
             (3, 'Cozinheiro'),
             (4, 'Barman');
+
+
+-- Inserção de funcionarios
+INSERT INTO public.funcionarios(cpf, nome, sexo_masculino, ctps, salario, turno_diurno, senha, cargo)
+    VALUES  ('12312312312', 'Tiago', true, '478640631', 3000.00, true, 'senha', 1),
+            ('45645645645', 'Roberto', true, '478640631', 3000.00, true, 'senha', 2),
+            ('78978978978', 'Paulo', true, '478640631', 3000.00, true, 'senha', 3),
+            ('15315315315', 'João', true, '478640631', 3000.00, true, 'senha', 4);
+
 
 -- Inserção de produtos
 INSERT INTO public.produtos(nome, preco, lista_ingredientes, qtd_ingredientes)
@@ -32,6 +41,7 @@ INSERT INTO public.produtos(nome, preco, lista_ingredientes, qtd_ingredientes)
             ('Misto quente', 4.90, ARRAY[29,30,41], ARRAY[1,1,1]),
             ('Sanduiche com peito de peru', 5.90, ARRAY[29,31,41], ARRAY[1,1,1]),
             ('Batata frita', 6.90, ARRAY[10,23], ARRAY[1,1]);
+
 
 -- Inserção de ingredientes
 INSERT INTO public.ingredientes(nome, qtd_estoque) 
@@ -76,6 +86,7 @@ INSERT INTO public.ingredientes(nome, qtd_estoque)
             ('Sardinha', 41),
             ('Salmao', 27),
             ('Pao', 87);
+
 
 -- Inserção das mesas
 INSERT INTO public.mesas(andar)
