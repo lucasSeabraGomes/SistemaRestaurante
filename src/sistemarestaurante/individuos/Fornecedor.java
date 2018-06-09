@@ -6,19 +6,47 @@
 package sistemarestaurante.individuos;
 import sistemarestaurante.estoque.Ingrediente;
 import java.util.Scanner;//Import da classe Scanner
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import sistemarestaurante.ferramentas.ConnectionFactory;
 /**
  *
  * @author lucas seabra
  */
 public class Fornecedor {
     private String cnpj;
-    private String nomeFornecedor;
     private String enderecoFornecedor;
     private String emailFornecedor;
     private String telefoneFornecedor;
     private int[][]quantidadeDisponivelDeIngredientes;
     private float[]precoDosIngredientes;
+    //metodo para colocar cadastrar novo fornecedor no banco
+     public void insereBanco() throws SQLException {
+        Connection con = new ConnectionFactory().getConexao();
+        String query = "INSERT INTO fornecedores " +
+                            "(cnpj, telefone, endereco,email) " +
+                            "VALUES(?,?,?,?);";
+        PreparedStatement stmt = con.prepareStatement(query);
+        
+        stmt.setString(1, cnpj);
+        stmt.setString(2,telefoneFornecedor);
+        stmt.setString(3,  enderecoFornecedor);
+        stmt.setString(4, emailFornecedor);
 
+        try {
+            stmt.executeUpdate();
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+    }
     /**
      * @return the cnpj
      */
@@ -31,20 +59,6 @@ public class Fornecedor {
      */
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
-    }
-
-    /**
-     * @return the nome
-     */
-    public String getNomeFornecedor() {
-        return this.nomeFornecedor;
-    }
-
-    /**
-     * @param nome the nome to set
-     */
-    public void setNomeFornecedor(String nome) {
-        this.nomeFornecedor = nome;
     }
 
     /**
