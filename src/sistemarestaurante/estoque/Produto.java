@@ -1,6 +1,5 @@
 package sistemarestaurante.estoque;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +12,7 @@ public class Produto{
     private int codigo;
     private String nome;
     private double preco;
+    private boolean bebida;
     private ArrayList<Integer> listaIngredientes = new ArrayList<Integer>();
     private ArrayList<Integer> qtdCadaIngrediente = new ArrayList<Integer>();
     
@@ -27,27 +27,26 @@ public class Produto{
     /**
      * Métodos de classe
      */
-    public static boolean verificaPossuiEstoque(int codigo, int qtdProduto) throws SQLException{
+    public static boolean verificaPossuiEstoque(int codProduto, int qtdProduto) throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String sql = "SELECT lista_ingredientes, qtd_ingredientes FROM produtos WHERE codigo = ?;";
+        String sql = "SELECT cod_ingrediente, qtd_ingrediente " +
+                        "FROM produto_ingrediente WHERE cod_produto = ?;";
         PreparedStatement stmt = con.prepareStatement(sql);
-        boolean possuiEstoque = true;
+        int possuiEstoque = 0;
 
-        stmt.setInt(1, codigo);
+        stmt.setInt(1, codProduto);
 
         try {
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()){
-                Array codProd = rs.getArray("lista_ingredientes");
-                Integer[] codigoIngrediente = (Integer[]) codProd.getArray();
-                Array qtdProd = rs.getArray("qtd_ingredientes");
-                Integer[] qtdIngrediente = (Integer[]) qtdProd.getArray();
-                
-                for(int i = 0; i < codigoIngrediente.length; i++){
-                    if((qtdIngrediente[i] * qtdProduto) > Ingrediente.checaEstoque(codigoIngrediente[i])){
-                        possuiEstoque = false;
-                    }
+                int codIngrediente = rs.getInt("cod_ingrediente");
+                int qtdIngrediente = rs.getInt("qtd_ingrediente");
+                int qtdNecessaria = qtdIngrediente * qtdProduto;
+                int qtdEstoque = Ingrediente.checaEstoque(codIngrediente);
+
+                if(qtdNecessaria <= qtdEstoque){
+                    possuiEstoque = possuiEstoque + 1;
                 }
             }
         }
@@ -58,31 +57,31 @@ public class Produto{
             stmt.close();
             con.close();
         }
-        return possuiEstoque;
+
+        if(possuiEstoque == 0){
+            return false;
+        }
+        return true;
     }
 
 
-    public static void consomeProdutoEstoque(int codigo) throws SQLException{
+    public static void consomeProdutoEstoque(int codProduto) throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String sql = "SELECT lista_ingredientes, qtd_ingredientes FROM produtos WHERE codigo = ?;";
+        String sql = "SELECT cod_ingrediente, qtd_ingrediente " +
+                        "FROM produto_ingrediente WHERE cod_produto = ?;";
         PreparedStatement stmt = con.prepareStatement(sql);
 
-        stmt.setInt(1, codigo);
+        stmt.setInt(1, codProduto);
 
         try {
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()){
-                Array a = rs.getArray("lista_ingredientes");
-                Integer[] codigoIngrediente = (Integer[]) a.getArray();
-                Array b = rs.getArray("qtd_ingredientes");
-                Integer[] qtdIngrediente = (Integer[]) b.getArray();
+                int codigoIngrediente = rs.getInt("cod_ingrediente");
+                int qtdIngrediente = rs.getInt("qtd_ingrediente");
                 
-                for(int i = 0; i < codigoIngrediente.length; i++){
-                    Ingrediente.diminuiQtdEstoque(codigoIngrediente[i], qtdIngrediente[i]);
-                }
+                Ingrediente.diminuiQtdEstoque(codigoIngrediente, qtdIngrediente);
             }
-
         }
         catch(SQLException e) {
             throw new RuntimeException(e);
@@ -177,33 +176,7 @@ public class Produto{
     }
 
 
-	/**
-     * Métodos de acesso ao banco de dados
-     */
-    public void insereBanco() throws SQLException {
-        Connection con = new ConnectionFactory().getConexao();
-        String sql = "INSERT INTO produtos " +
-                            "(nome, lista_ingredientes, qtd_ingredientes) " +
-                            "VALUES(?,?,?);";
-        PreparedStatement stmt = con.prepareStatement(sql);
-        
-        stmt.setString(1, nome);
-        stmt.setArray(2, con.createArrayOf("integer", listaIngredientes.toArray()));
-        stmt.setArray(3, con.createArrayOf("integer", listaIngredientes.toArray()));
-
-        try {
-            stmt.executeUpdate();
-        }
-        catch(SQLException e) {
-            throw new RuntimeException(e);
-        }
-        finally {
-            stmt.close();
-            con.close();
-        }
-    }
-
-    /** 
+	/** 
      * GET's e SET's das variveis de classe
      */
 	// Variavel codigo
@@ -228,9 +201,20 @@ public class Produto{
 		this.preco = preco;
 	}
     
+    // Variabel bebida
+	public boolean isBebida() {
+		return bebida;
+	}
+    public void setBebida(boolean bebida) {
+		this.bebida = bebida;
+	}
+    
+    // ArrayList listaIngredientes
     public ArrayList<Integer> getListaIngredientes() {
         return listaIngredientes;
     }
+
+    // ArrayList qtdCadaIngrediente
     public ArrayList<Integer> getQtdCadaIngrediente() {
         return qtdCadaIngrediente;
     }

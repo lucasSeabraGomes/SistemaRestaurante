@@ -4,13 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Scanner;
 
 import sistemarestaurante.ferramentas.ConnectionFactory;
 
 public class Cliente extends Pessoa {
-    ArrayList<Integer> pedidosFrequentes = new ArrayList<Integer>();
 
     public void insereBanco() throws SQLException {
         Connection con = new ConnectionFactory().getConexao();

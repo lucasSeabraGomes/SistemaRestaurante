@@ -1,4 +1,4 @@
-package sistemarestaurante;
+package sistemarestaurante.menu;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -7,12 +7,14 @@ import sistemarestaurante.estoque.Ingrediente;
 import sistemarestaurante.estoque.Produto;
 import sistemarestaurante.individuos.Funcionario;
 
-public class MenuGerente {
+public class Gerente {
     public static void menuPrincipal(String cpfUsuario) {
         Scanner input = new Scanner(System.in);
         int opcao = -1;
 
         while(opcao != 0){
+            System.out.println();
+            System.out.println();
             System.out.println("[1] Listar funcionarios.");
             System.out.println("[2] Listar cardapio.");
             System.out.println("[3] Listar estoque.");

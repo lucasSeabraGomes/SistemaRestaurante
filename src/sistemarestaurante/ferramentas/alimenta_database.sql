@@ -15,32 +15,34 @@ INSERT INTO public.funcionarios(cpf, nome, sexo_masculino, ctps, salario, turno_
 
 
 -- Inserção de produtos
-INSERT INTO public.produtos(nome, preco, lista_ingredientes, qtd_ingredientes)
-    VALUES  ('Agua', 2.50, ARRAY[1], ARRAY[1]),
-            ('Suco de laranja', 4.90, ARRAY[1,17], ARRAY[1,2]),
-            ('Suco de limao', 4.90, ARRAY[1,18], ARRAY[1,4]),
-            ('Suco de morango', 4.90, ARRAY[1,19], ARRAY[1,8]),
-            ('Suco de uva', 4.90, ARRAY[1,20], ARRAY[1,1]),
-            ('Suco de manga', 4.90, ARRAY[1,21], ARRAY[1,1]),
-            ('Suco de goiaba', 4.90, ARRAY[1,22], ARRAY[1,2]),
-            ('Refrigerante', 3.50, ARRAY[3], ARRAY[1]),
-            ('Cerveja', 6.90, ARRAY[4], ARRAY[1]),
-            ('Refeição com carne bovina', 19.90, ARRAY[5,6,8,9,10,12,25,26,34], ARRAY[1,1,1,1,1,1,1,1,1]),
-            ('Refeição com strogonoff de carne', 21.90, ARRAY[5,6,8,9,10,12,13,15,25,26,34], ARRAY[1,1,1,1,1,1,1,1,1,1,1]),
-            ('Refeição com frango', 17.90, ARRAY[5,6,8,9,10,12,25,26,37], ARRAY[1,1,1,1,1,1,1,1,1]),
-            ('Refeição com strogonoff frango', 19.90, ARRAY[5,6,8,9,10,12,13,15,25,26,37], ARRAY[1,1,1,1,1,1,1,1,1,1,1]),
-            ('Refeição com salmao', 23.90, ARRAY[5,6,8,9,10,12,25,26,40], ARRAY[1,1,1,1,1,1,1,1,1]),
-            ('Refeição com atum', 20.90, ARRAY[5,6,8,9,10,12,25,26,38], ARRAY[1,1,1,1,1,1,1,1,1]),
-            ('Refeição com carne suina', 18.90, ARRAY[5,6,8,9,10,12,25,26,35], ARRAY[1,1,1,1,1,1,1,1,1]),
-            ('Macarronada de atum', 19.90, ARRAY[7,8,9,11,12,13,38], ARRAY[1,1,1,1,1,1,1]),
-            ('Macarronada de salmao', 22.90, ARRAY[7,8,9,11,12,13,40], ARRAY[1,1,1,1,1,1,1]),
-            ('Macarronada de salsicha', 16.90, ARRAY[7,8,9,11,12,13,32], ARRAY[1,1,1,1,1,1,1]),
-            ('Macarronada de peito de peru', 18.90, ARRAY[7,8,9,11,12,13,31], ARRAY[1,1,1,1,1,1,1]),
-            ('Hambuguer', 9.90, ARRAY[10,14,25,26,29,30,33,36,41], ARRAY[1,1,1,1,1,1,1,1,1]),
-            ('Cachorro quente', 7.90, ARRAY[10,27,28,29,32,41], ARRAY[1,1,1,1,1,1]),
-            ('Misto quente', 4.90, ARRAY[29,30,41], ARRAY[1,1,1]),
-            ('Sanduiche com peito de peru', 5.90, ARRAY[29,31,41], ARRAY[1,1,1]),
-            ('Batata frita', 6.90, ARRAY[10,23], ARRAY[1,1]);
+INSERT INTO public.produtos(nome, preco, bebida)
+    VALUES  -- Bebidas
+            ('Agua', 2.50, true),
+            ('Suco de laranja', 4.90, true),
+            ('Suco de limao', 4.90, true),
+            ('Suco de morango', 4.90, true),
+            ('Suco de uva', 4.90, true),
+            ('Suco de manga', 4.90, true),
+            ('Suco de goiaba', 4.90, true),
+            ('Refrigerante', 3.50, true),
+            ('Cerveja', 6.90, true),
+            -- Refeições
+            ('Refeição com carne bovina', 19.90, false),
+            ('Refeição com frango', 17.90, false),
+            ('Refeição com salmao', 23.90, false),
+            ('Refeição com atum', 20.90, false),
+            ('Refeição com carne suina', 18.90, false),
+            -- Macarronadas
+            ('Macarronada de atum', 19.90, false),
+            ('Macarronada de salmao', 22.90, false),
+            ('Macarronada de salsicha', 16.90, false),
+            ('Macarronada de peito de peru', 18.90, false),
+            -- Lanches
+            ('Hambuguer', 9.90, false),
+            ('Cachorro quente', 7.90, false),
+            ('Misto quente', 4.90, false),
+            ('Sanduiche com peito de peru', 5.90, false),
+            ('Batata frita', 6.90, false);
 
 
 -- Inserção de ingredientes
@@ -73,6 +75,7 @@ INSERT INTO public.ingredientes(nome, qtd_estoque)
             ('Tomate', 54),
             ('Ervilha', 34),
             ('Milho', 41),
+            ('Pao', 87),
             ('Queijo mussarela', 32),
             ('Presunto', 19),
             ('Peito de peru', 37),
@@ -84,8 +87,38 @@ INSERT INTO public.ingredientes(nome, qtd_estoque)
             ('Frango', 42),
             ('Atum', 33),
             ('Sardinha', 41),
-            ('Salmao', 27),
-            ('Pao', 87);
+            ('Salmao', 27);
+            
+
+-- Inserção da relação de produtos e ingredientes
+INSERT INTO produto_ingrediente(cod_produto, cod_ingrediente, qtd_ingrediente) 
+    VALUES  -- Bebidas
+            (1,1,1),
+            (2,1,1),(2,17,2),
+            (3,1,1),(3,18,4),
+            (4,1,1),(4,19,8),
+            (5,1,1),(5,20,1),
+            (6,1,1),(6,21,1),
+            (7,1,1),(7,22,2),
+            (8,3,1),
+            (9,4,1),
+            -- Refeições
+            (10,5,1),(10,6,1),(10,8,1),(10,9,1),(10,10,1),(10,12,1),(10,25,1),(10,26,1),(10,35,1),
+            (11,5,1),(11,6,1),(11,8,1),(11,9,1),(11,10,1),(11,12,1),(11,25,1),(11,26,1),(11,38,1),
+            (12,5,1),(12,6,1),(12,8,1),(12,9,1),(12,10,1),(12,12,1),(12,25,1),(12,26,1),(12,41,1),
+            (13,5,1),(13,6,1),(13,8,1),(13,9,1),(13,10,1),(13,12,1),(13,25,1),(13,26,1),(13,39,1),
+            (14,5,1),(14,6,1),(14,8,1),(14,9,1),(14,10,1),(14,12,1),(14,25,1),(14,26,1),(14,36,1),
+            -- Macarronadas
+            (15,7,1),(15,8,1),(15,9,1),(15,11,1),(15,12,1),(15,13,1),(15,39,1),
+            (16,7,1),(16,8,1),(16,9,1),(16,11,1),(16,12,1),(16,13,1),(16,41,1),
+            (17,7,1),(17,8,1),(17,9,1),(17,11,1),(17,12,1),(17,13,1),(17,33,1),
+            (18,7,1),(18,8,1),(18,9,1),(18,11,1),(18,12,1),(18,13,1),(18,32,1),
+            -- Lanches
+            (19,10,1),(19,14,1),(19,25,1),(19,26,1),(19,29,1),(19,30,1),(19,31,1),(19,34,1),(19,37,1),
+            (20,10,1),(20,27,1),(20,28,1),(20,29,1),(20,30,1),(20,33,1),
+            (21,29,1),(21,30,1),(21,31,1),
+            (22,29,1),(22,30,1),(22,32,1),
+            (23,10,1),(23,23,1);
 
 
 -- Inserção das mesas

@@ -67,7 +67,7 @@ public class Funcionario extends Pessoa {
         try {
             ResultSet rs = stmt.executeQuery();
 
-            System.out.printf("\n\n |CPF\t- Nome\t- Salario\t- Turno\t- Cargo|\n");
+            System.out.printf("\n\n|CPF\t- Nome\t- Salario\t- Turno\t- Cargo|\n");
 
             while(rs.next()){
                 String cpf = rs.getString("cpf");

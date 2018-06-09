@@ -3,6 +3,11 @@ package sistemarestaurante;
 import java.sql.SQLException;
 
 import sistemarestaurante.ferramentas.Login;
+import sistemarestaurante.menu.Barman;
+import sistemarestaurante.menu.Cozinheiro;
+import sistemarestaurante.menu.Garcom;
+import sistemarestaurante.menu.Gerente;
+
 
 public class Main {
     public static void main(String[] args) throws SQLException {
@@ -13,19 +18,19 @@ public class Main {
         
         switch(opcao){
             case 1:
-                MenuGerente.menuPrincipal(login.getCpfUsuario());
+                Gerente.menuPrincipal(login.getCpfUsuario());
                 break;
             
             case 2:
-                MenuGarcom.menuPrincipal(login.getCpfUsuario());
+                Garcom.menuPrincipal(login.getCpfUsuario());
                 break;
             
             case 3:
-                MenuBarman.menuPrincipal(login.getCpfUsuario());
+                Barman.menuPrincipal(login.getCpfUsuario());
                 break;
             
             case 4:
-                MenuCozinha.menuPrincipal(login.getCpfUsuario());
+                Cozinheiro.menuPrincipal(login.getCpfUsuario());
                 break;
             
             default:

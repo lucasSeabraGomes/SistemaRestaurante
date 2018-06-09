@@ -11,7 +11,7 @@ CREATE DATABASE restaurante
        LC_CTYPE = 'pt_BR.UTF-8'
        CONNECTION LIMIT = -1;
 
-
+-- Tabela de clientes
 CREATE TABLE public.clientes(
   cpf VARCHAR(11) PRIMARY KEY,
   nome VARCHAR(50) NOT null,
@@ -27,12 +27,11 @@ CREATE TABLE public.clientes(
   endereco VARCHAR(50),
   escolaridade VARCHAR(20),
   profissao VARCHAR(20),
-  pedidos_frequentes INTEGER[]
 );
 ALTER TABLE public.clientes
   OWNER TO restaurante;
 
-
+-- Tabela de cargos
 CREATE TABLE public.cargos(
   codigo INTEGER PRIMARY KEY,
   nome VARCHAR(20) NOT null
@@ -40,7 +39,7 @@ CREATE TABLE public.cargos(
 ALTER TABLE public.cargos
   OWNER TO restaurante;
 
-
+-- Tabela de funcionarios
 CREATE TABLE public.funcionarios(
   cpf VARCHAR(11) PRIMARY KEY,
   nome VARCHAR(50) NOT null,
@@ -56,7 +55,7 @@ CREATE TABLE public.funcionarios(
   endereco VARCHAR(50),
   escolaridade VARCHAR(20),
   ctps VARCHAR(20) NOT null,
-  salario NUMERIC NOT null DEFAULT 0.0,
+  salario NUMERIC(10,2) NOT null DEFAULT 0.0,
   turno_diurno BOOLEAN NOT null DEFAULT true,
   senha VARCHAR(20) NOT null,
   cargo INTEGER REFERENCES public.cargos(codigo)
@@ -64,7 +63,7 @@ CREATE TABLE public.funcionarios(
 ALTER TABLE public.funcionarios
   OWNER TO restaurante;
 
-
+-- Tabela de fornecedores
 CREATE TABLE public.fornecedores(
   codigo SERIAL,
   cnpj VARCHAR(14) PRIMARY KEY,
@@ -75,7 +74,7 @@ CREATE TABLE public.fornecedores(
 ALTER TABLE public.fornecedores
   OWNER TO restaurante;
 
-
+-- Tabela de mesas
 CREATE TABLE public.mesas(
   codigo SERIAL PRIMARY KEY,
   andar INTEGER NOT null,
@@ -85,7 +84,7 @@ CREATE TABLE public.mesas(
 ALTER TABLE public.mesas
   OWNER TO restaurante;
 
-
+-- Tabela de ingredientes
 CREATE TABLE public.ingredientes(
   codigo SERIAL PRIMARY KEY,
   nome VARCHAR(50) NOT null,
@@ -94,59 +93,78 @@ CREATE TABLE public.ingredientes(
 ALTER TABLE public.ingredientes
   OWNER TO restaurante;
 
+-- Tabela de produtos
+CREATE TABLE public.produtos(
+  codigo SERIAL PRIMARY KEY,
+  nome VARCHAR(50) NOT null,
+  preco NUMERIC(10,2) NOT null DEFAULT 0.0,
+  bebida BOOLEAN NOT null
+);
+ALTER TABLE public.produtos
+  OWNER TO restaurante;
 
+-- Tabela de pedidos
 CREATE TABLE public.pedidos(
   codigo SERIAL PRIMARY KEY,
   cod_mesa INTEGER NOT null REFERENCES public.mesas(codigo),
-  cpf_cliente VARCHAR(11) NOT null REFERENCES public.clientes(cpf),
+  cpf_cliente VARCHAR(11),
   cpf_garcom VARCHAR(11) NOT null REFERENCES public.funcionarios(cpf),
-  lista_produtos INTEGER[],
-  qtd_produtos INTEGER[],
-  preco_total NUMERIC NOT null DEFAULT 0.0,
+  preco_total NUMERIC(10,2) NOT null DEFAULT 0.0,
   pedido_pronto BOOLEAN DEFAULT false,
   pedido_pago BOOLEAN DEFAULT false
 );
 ALTER TABLE public.pedidos
   OWNER TO restaurante;
 
+-- Tabela que relaciona produtos e ingredientes
+CREATE TABLE public.produto_ingrediente(
+  cod_produto INTEGER REFERENCES public.produtos(codigo),
+  cod_ingrediente INTEGER REFERENCES public.ingredientes(codigo),
+  qtd_ingrediente INTEGER NOT null,
+  PRIMARY KEY (cod_produto, cod_ingrediente)
+);
+ALTER TABLE public.produto_ingrediente
+  OWNER TO restaurante;
 
+-- Tabela que relaciona pedidos e produtos
+CREATE TABLE public.pedido_produto(
+  cod_pedido INTEGER REFERENCES public.pedidos(codigo),
+  cod_produto INTEGER REFERENCES public.produtos(codigo),
+  qtd_produto INTEGER NOT null,
+  pronto BOOLEAN NOT null DEFAULT false,
+  PRIMARY KEY (cod_pedido, cod_produto)
+);
+ALTER TABLE public.pedido_produto
+  OWNER TO restaurante;
+
+-- Tabela de registro de pagamentos de pedidos
 CREATE TABLE public.pagamentos(
   codigo SERIAL PRIMARY KEY,
   cod_pedido INTEGER NOT null REFERENCES public.pedidos(codigo),
-  data DATE NOT null,
-  valor NUMERIC NOT null DEFAULT 0.0
+  data DATE NOT null DEFAULT CURRENT_DATE,
+  valor NUMERIC(10,2) NOT null DEFAULT 0.0
 );
 ALTER TABLE public.pagamentos
   OWNER TO restaurante;
 
-
-CREATE TABLE public.produtos(
-  codigo SERIAL PRIMARY KEY,
-  nome VARCHAR(50) NOT null,
-  preco NUMERIC NOT null DEFAULT 0.0,
-  lista_ingredientes INTEGER[],
-  qtd_ingredientes INTEGER[]
-);
-ALTER TABLE public.produtos
-  OWNER TO restaurante;
-
-
+-- Tabela de custos de RH
 CREATE TABLE public.custos_rh(
   codigo SERIAL PRIMARY KEY,
-  data DATE NOT null,
+  data DATE NOT null DEFAULT CURRENT_DATE,
   cod_funcionario VARCHAR(11) REFERENCES public.funcionarios(cpf),
-  salario NUMERIC NOT null
+  salario NUMERIC(10,2) NOT null
 );
 ALTER TABLE public.custos_rh
   OWNER TO restaurante;
 
-
+-- Tabela de custos de reposição de estoque
 CREATE TABLE public.custos_estoque(
   codigo SERIAL PRIMARY KEY,
-  data DATE NOT null,
+  cnpj_fornecedor VARCHAR(14) NOT null REFERENCES public.fornecedores(cnpj),
+  data DATE NOT null DEFAULT CURRENT_DATE,
   cod_ingrediente INTEGER REFERENCES public.ingredientes(codigo),
-  quantidade INTEGER NOT null,
-  valor_total NUMERIC NOT null
+  qtd_ingredientes INTEGER NOT null,
+  preco_unitario NUMERIC(10,2) NOT null DEFAULT 0.0
 );
 ALTER TABLE public.custos_estoque
   OWNER TO restaurante;
@@ -157,4 +175,4 @@ ALTER TABLE public.custos_estoque
 
 
 
--- DROP TABLE cargos, clientes, custos_estoque, custos_rh, fornecedores, funcionarios, ingredientes, mesas, pagamentos, pedidos, produtos;
+-- DROP TABLE clientes, cargos, funcionarios, fornecedores, mesas, ingredientes, produtos, pedidos, produto_ingrediente, pedido_produto, pagamentos, custos_rh, custos_estoque;

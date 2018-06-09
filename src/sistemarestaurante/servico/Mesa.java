@@ -27,7 +27,7 @@ public class Mesa{
         try {
             ResultSet rs = stmt.executeQuery();
             
-            if(rs.next()){
+            if(rs.next()) {
                 codigoMesa = rs.getInt("codigo");
             }
         }
@@ -42,9 +42,32 @@ public class Mesa{
 	}
 
 
-	public static void ocupaMesa(String cpf, int codigoMesa) throws SQLException {
+	public static void ocupaMesa(int codigoMesa) throws SQLException {
 		Connection con = new ConnectionFactory().getConexao();
-		String sql = "UPDATE mesas SET ocupada = true, cpf_ocupante = ?" +
+		String sql = "UPDATE mesas SET ocupada = true " +
+						"WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+
+		stmt.setInt(1, codigoMesa);
+
+        try {
+			if(stmt.executeUpdate() > 0) {
+				System.out.printf("\nA mesa %d foi ocupada pelo cliente.\n", codigoMesa);
+			}
+		}            
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+	}
+	
+
+	public static void ocupaMesa(int codigoMesa, String cpf) throws SQLException {
+		Connection con = new ConnectionFactory().getConexao();
+		String sql = "UPDATE mesas SET ocupada = true, cpf_ocupante = ? " +
 						"WHERE codigo = ?;";
         PreparedStatement stmt = con.prepareStatement(sql);
 
@@ -54,7 +77,7 @@ public class Mesa{
         try {
 			if(stmt.executeUpdate() > 0){
 			
-			System.out.printf("A mesa %d foi ocupada pelo cliente %s, CPF %s.\n",
+			System.out.printf("\nA mesa %d foi ocupada pelo cliente %s, CPF %s.\n",
 								codigoMesa, Cliente.buscaNome(cpf), cpf);
 			}
 		}            
@@ -79,7 +102,7 @@ public class Mesa{
         try {
 			stmt.executeUpdate();
 			
-			System.out.printf("A mesa %d foi desocupada.\n", codigoMesa);
+			System.out.printf("\nA mesa %d foi desocupada.\n", codigoMesa);
 		}            
         catch(SQLException e) {
             throw new RuntimeException(e);

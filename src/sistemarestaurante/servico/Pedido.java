@@ -27,27 +27,29 @@ public class Pedido{
     /**
      * Método para adicionar produto ao pedido da mesa
      */
-    public void addItemPedido(int codigoProduto, int quantidade) throws SQLException {
-        if(Produto.verificaPossuiEstoque(codigoProduto, quantidade)){
-            produtosPedidos.add(codigoProduto);
+    public void addItemPedido(int codProduto, int quantidade) throws SQLException {
+        if(Produto.verificaPossuiEstoque(codProduto, quantidade)){
+            produtosPedidos.add(codProduto);
             qtdProdutosPedidos.add(quantidade);
-            precoTotal = precoTotal + (Produto.buscaPreco(codigoProduto) * quantidade);
+            precoTotal = precoTotal + (Produto.buscaPreco(codProduto) * quantidade);
         }
         else{
-            System.out.printf("Nao ha estoque para o produto %s!", Produto.buscaNome(codigoProduto));
+            System.out.printf("\nNao ha estoque para o produto %s\n!", Produto.buscaNome(codProduto));
         }
 	}
 
 	/**
      * Métodos de classe
      */
-    public static void marcaPedidoPronto(int codigo) throws SQLException{
+    public static void marcaProdutoPronto(int codPedido, int codProduto) throws SQLException{
 		Connection con = new ConnectionFactory().getConexao();
-        String query = "UPDATE pedidos SET pedido_pronto = true " +
-                            "WHERE codigo = ?;";
-        PreparedStatement stmt = con.prepareStatement(query);
+        String sql = "UPDATE pedido_produto SET pronto = true " +
+                            "WHERE cod_pedido = ? " +
+                            "AND cod_produto = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
         
-        stmt.setInt(1, codigo);
+        stmt.setInt(1, codPedido);
+        stmt.setInt(2, codProduto);
 
         try {
             stmt.executeUpdate();
@@ -57,15 +59,15 @@ public class Pedido{
         }
         finally {
             stmt.close();
-            con.close();
         }
     }
+
     
     public static void marcaPedidoPago(int codigo) throws SQLException{
 		Connection con = new ConnectionFactory().getConexao();
-        String query = "UPDATE pedidos SET pedido_pago = true " +
+        String sql = "UPDATE pedidos SET pedido_pago = true " +
                             "WHERE codigo = ?;";
-        PreparedStatement stmt = con.prepareStatement(query);
+        PreparedStatement stmt = con.prepareStatement(sql);
         
         stmt.setInt(1, codigo);
 
@@ -86,20 +88,19 @@ public class Pedido{
      */
     public void insereBanco() throws SQLException {
         Connection con = new ConnectionFactory().getConexao();
-        String query = "INSERT INTO pedidos " +
-                            "(cod_mesa, cpf_cliente, cpf_garcom, lista_produtos, qtd_produtos, preco_total) " +
-                            "VALUES(?, ?, ?, ?, ?, ?);";
-        PreparedStatement stmt = con.prepareStatement(query);
+        String sql = "INSERT INTO pedidos " +
+                            "(cod_mesa, cpf_cliente, cpf_garcom, preco_total) " +
+                            "VALUES(?, ?, ?, ?);";
+        PreparedStatement stmt = con.prepareStatement(sql);
         
         stmt.setInt(1, codigoMesa);
         stmt.setString(2, cpfCliente);
         stmt.setString(3, cpfGarcom);
-        stmt.setArray(4, con.createArrayOf("integer", produtosPedidos.toArray()));
-        stmt.setArray(5, con.createArrayOf("integer", qtdProdutosPedidos.toArray()));
-        stmt.setDouble(6, precoTotal);
+        stmt.setDouble(4, precoTotal);
 
         try {
             stmt.executeUpdate();
+            insereProdutosPedidos(produtosPedidos, qtdProdutosPedidos);
         }
         catch(SQLException e) {
             throw new RuntimeException(e);
@@ -108,6 +109,59 @@ public class Pedido{
             stmt.close();
             con.close();
         }
+    }
+
+
+    public void insereProdutosPedidos(ArrayList<Integer> produtosPedidos, 
+                                        ArrayList<Integer> qtdProdutosPedidos) 
+                                        throws SQLException {
+
+        Connection con = new ConnectionFactory().getConexao();
+        int codPedido = buscaUltimoPedido();
+        
+        for(int i = 0; i < produtosPedidos.size(); i++) {
+            String sql = "INSERT INTO pedido_produto (cod_pedido, cod_produto, qtd_produto) " +
+                            "VALUES(?, ?, ?);";
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, codPedido);
+            stmt.setInt(2, produtosPedidos.get(i));
+            stmt.setInt(3, qtdProdutosPedidos.get(i));
+
+            try {
+                stmt.executeUpdate();
+            }
+            catch(SQLException e) {
+                throw new RuntimeException(e);
+            }
+            finally {
+                stmt.close();
+            }
+        }
+    }
+
+
+    public int buscaUltimoPedido() throws SQLException {
+        Connection con = new ConnectionFactory().getConexao();
+        String sql = "SELECT codigo FROM pedidos ORDER BY codigo DESC " +
+                        "FETCH FIRST 1 ROW ONLY;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        int codPedido = 0;
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+            
+            if(rs.next()) {
+                codPedido = rs.getInt("codigo");
+            }
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+        }
+        return codPedido;
     }
 
 
@@ -122,7 +176,7 @@ public class Pedido{
         try {
             ResultSet rs = stmt.executeQuery();
             
-            while(rs.next()){
+            if(rs.next()) {
                 conta = rs.getDouble("preco_total");
             }
         }
