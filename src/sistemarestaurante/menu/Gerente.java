@@ -158,9 +158,9 @@ public class Gerente {
         //input.close();
     }
 
-    //#########################################################################
-    public static void consultaProdutividade() {
-        System.out.println("Opcao nao implementada!");
+
+    public static void consultaProdutividade() throws SQLException {
+        Funcionario.consultaProdutividade();
     }
 
     

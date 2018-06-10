@@ -34,6 +34,13 @@ WHERE p.cpf_garcom = '45645645645' AND pedido_pago = false
 GROUP BY codigo
 ORDER BY codigo;
 
+-- Total de pedidos atendidos por garcom
+SELECT f.cpf, f.nome, COUNT(p.codigo) 
+FROM funcionarios AS f
+	INNER JOIN pedidos AS p
+	ON f.cpf = p.cpf_garcom
+GROUP BY f.cpf;
+
 -- Pedidos pendentes cozinha
 SELECT pp.cod_pedido, pr.nome, pp.qtd_produto
 FROM produtos AS pr

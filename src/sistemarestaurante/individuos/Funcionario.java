@@ -96,6 +96,39 @@ public class Funcionario extends Pessoa {
     }
 
 
+    public static void consultaProdutividade() throws SQLException{
+        Connection con = new ConnectionFactory().getConexao();
+        String sql = "SELECT f.cpf, f.nome, COUNT(p.codigo) " +
+                        "FROM funcionarios AS f " +
+                            "INNER JOIN pedidos AS p " +
+                            "ON f.cpf = p.cpf_garcom " +
+                        "GROUP BY f.cpf;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+
+            System.out.printf("\n\n|CPF\t- Nome\t\t- Pedidos atendidos|\n");
+
+            while(rs.next()){
+                String cpf = rs.getString("cpf");
+                String nome = rs.getString("nome");
+                int qtdPedidos = rs.getInt("count");
+                
+                System.out.printf("|%s\t- %s\t\t- %d|\n", cpf, nome, qtdPedidos);
+            }
+
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+    }
+
+
     public static String buscaNome(String cpf) throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
         String sql = "SELECT nome FROM funcionarios WHERE cpf = ?;";
