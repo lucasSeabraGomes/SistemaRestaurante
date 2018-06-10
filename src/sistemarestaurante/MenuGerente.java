@@ -1,7 +1,7 @@
 package sistemarestaurante;
 
 import java.util.Scanner;
-
+import sistemarestaurante.individuos.fornecedor;
 public class MenuGerente {
     public static void menuPrincipal(String cpfUsuario) {
         Scanner input = new Scanner(System.in);
@@ -23,6 +23,7 @@ public class MenuGerente {
         System.out.println("[14] Consultar despesas funcionarios.");
         System.out.println("[15] Consultar balanco.");
         System.out.println("[16] Listar preferencias de clientes.");
+        System.out.println("[17] Cadastrar novo fornecedor.");
         System.out.println("[0] Sair.");
         System.out.println();
 
@@ -129,8 +130,8 @@ public class MenuGerente {
     
     public static void listaFornecedores() {
         Scanner input = new Scanner();
-
-        System.out.println("")
+        Fornecedor este=new Fornecedor();
+        imprimeFornecedores();
     }
 
     
@@ -215,4 +216,18 @@ public class MenuGerente {
 
         System.out.println("")
     }
+    public static void CadastrarFornecedor() {
+        Scanner input = new Scanner();
+        Fornecedor novo=new Fornecedor();
+        System.out.println("Digite o cnpj do fornecedor");
+        novo.setCnpj(input.nextLine());
+        System.out.println("Digite o endereco do fornecedor");
+        novo.setEnderecoFornecedor(input.nextLine());
+        System.out.println("Digite o email do fonecedor");
+        novo.setEmailFornecedor(input.nextLine());
+        System.out.println("Digite o telefone do fornecedor");
+        novo.setTelefoneFornecedor(input.nextLine());
+        este.insereBanco();
+    }
+    
 }
