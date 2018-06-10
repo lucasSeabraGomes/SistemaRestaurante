@@ -143,7 +143,29 @@ public class Gerente {
 
     //#########################################################################
     public static void contrataFuncionario() {
-        System.out.println("Opcao nao implementada!");
+        Funcionario este=new Funcionario();
+        Scanner input = new Scanner(System.in);
+        String novo;
+        int outro;
+        System.out.println("Digite o cpf do novo funcionario");
+        System.out.println("Digite o nome do novo funcionario");
+        System.out.println("Digite o rg do novo funcionario");
+        System.out.println("Digite a dada de nacimentodo novo funcionario no formato dia/mes/ano como o exemplo:20/02/1996");
+        System.out.println("Digite o nome do pai do novo funcionario");
+        System.out.println("Digite o nome da mãe do novo funcionario");
+        System.out.println("Digite o pais do novo funcionario");
+        System.out.println("Digite o estado civl do novo funcionario");
+        System.out.println("Digite o 1 caso o novo funcionario seja homem e 2 caso seja mulher");
+        System.out.println("Digite o telefone do novo funcionario");
+        System.out.println("Digite o email do novo funcionario");
+        System.out.println("Digite o endereco do novo funcionario");
+        System.out.println("Digite o grau de escolaridade do novo funcionario");
+        System.out.println("Digite a carteirade trabalho do novo funcionario");
+        System.out.println("Digite o salario do novo funcionario");
+        System.out.println("Digite 1 caso o turno do novo funcionario seja diurno e 2 caso seja noturno");
+        System.out.println("Digite a senha inicial do novo funcionario");
+        System.out.println("Digite o cargo do novo funcionario");
+        
     }
 
     
