@@ -2,7 +2,9 @@ package sistemarestaurante.servico;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import sistemarestaurante.ferramentas.ConnectionFactory;
@@ -39,6 +41,40 @@ public class Pagamento {
         }
     }
 
+
+    public static void listaPagamentos() throws SQLException{
+        Connection con = new ConnectionFactory().getConexao();
+        String sql = "SELECT data, codigo, cod_pedido, valor " +
+                        "FROM pagamentos " +
+						"ORDER BY data DESC, codigo ASC;";
+		PreparedStatement stmt = con.prepareStatement(sql);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+
+			System.out.printf("\n\n|Data\t\t- Codigo do pagamento - Codigo do pedido - Valor|\n");
+
+            while(rs.next()){
+				Date data = rs.getDate("data");
+                String dataFormatada = sdf.format(data);
+                int codPagamento = rs.getInt("codigo");
+                int codPedido = rs.getInt("cod_pedido");
+                double valor = rs.getDouble("valor");
+
+                System.out.printf("|%s\t- %d\t\t\t- %d\t\t- R$ %.2f|\n", 
+                                    dataFormatada, codPagamento, 
+                                    codPedido, valor);
+            }
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+	}
 	
 
     /**

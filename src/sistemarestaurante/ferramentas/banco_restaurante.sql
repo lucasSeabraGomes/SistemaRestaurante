@@ -67,6 +67,7 @@ ALTER TABLE public.funcionarios
 CREATE TABLE public.fornecedores(
   codigo SERIAL,
   cnpj VARCHAR(14) PRIMARY KEY,
+  razao_social VARCHAR(30) NOT NULL,
   telefone VARCHAR(12),
   endereco VARCHAR(50),
   email VARCHAR(30)
@@ -151,7 +152,7 @@ ALTER TABLE public.pagamentos
 CREATE TABLE public.custos_rh(
   codigo SERIAL PRIMARY KEY,
   data DATE NOT null DEFAULT CURRENT_DATE,
-  cod_funcionario VARCHAR(11) REFERENCES public.funcionarios(cpf),
+  cpf_funcionario VARCHAR(11) REFERENCES public.funcionarios(cpf),
   salario NUMERIC(10,2) NOT null
 );
 ALTER TABLE public.custos_rh

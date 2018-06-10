@@ -61,7 +61,8 @@ public class Funcionario extends Pessoa {
 
     public static void listaFuncionarios() throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String sql = "SELECT cpf, nome, salario, turno_diurno, cargo FROM funcionarios;";
+        String sql = "SELECT cpf, nome, salario, turno_diurno, cargo " +
+                        "FROM funcionarios ORDER BY nome;";
         PreparedStatement stmt = con.prepareStatement(sql);
 
         try {

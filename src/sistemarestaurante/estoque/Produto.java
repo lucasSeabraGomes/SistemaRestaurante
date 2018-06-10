@@ -95,7 +95,8 @@ public class Produto{
 
     public static void imprimeProdutos() throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String sql = "SELECT codigo, nome, preco FROM produtos;";
+        String sql = "SELECT codigo, nome, preco FROM produtos " +
+                        "ORDER BY codigo;";
         PreparedStatement stmt = con.prepareStatement(sql);
 
         try {

@@ -32,6 +32,10 @@ public class Pedido{
             produtosPedidos.add(codProduto);
             qtdProdutosPedidos.add(quantidade);
             precoTotal = precoTotal + (Produto.buscaPreco(codProduto) * quantidade);
+
+            for(int i = 0; i < quantidade; i++) {
+                Produto.consomeProdutoEstoque(codProduto);
+            }
         }
         else{
             System.out.printf("\nNao ha estoque para o produto %s\n!", Produto.buscaNome(codProduto));

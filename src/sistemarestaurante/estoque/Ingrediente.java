@@ -28,7 +28,8 @@ public class Ingrediente{
      */
     public static void imprimeEstoque() throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String sql = "SELECT codigo, nome, qtd_estoque FROM ingredientes;";
+        String sql = "SELECT codigo, nome, qtd_estoque FROM ingredientes " +
+                        "ORDER BY codigo;";
         PreparedStatement stmt = con.prepareStatement(sql);
 
         try {
@@ -105,6 +106,32 @@ public class Ingrediente{
             stmt.close();
             con.close();
         }
+    }
+
+
+    public static String buscaNome(int codigo) throws SQLException{
+        Connection con = new ConnectionFactory().getConexao();
+        String sql = "SELECT nome FROM ingredientes WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        String nome = null;
+
+        stmt.setInt(1, codigo);
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+            
+            if(rs.next()) {
+                nome = rs.getString("nome");
+            }
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+        return nome;
     }
     
 	

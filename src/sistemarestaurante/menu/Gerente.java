@@ -3,12 +3,16 @@ package sistemarestaurante.menu;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import sistemarestaurante.administrativo.CustoEstoque;
+import sistemarestaurante.administrativo.CustoRH;
+import sistemarestaurante.administrativo.Fornecedor;
 import sistemarestaurante.estoque.Ingrediente;
 import sistemarestaurante.estoque.Produto;
 import sistemarestaurante.individuos.Funcionario;
+import sistemarestaurante.servico.Pagamento;
 
 public class Gerente {
-    public static void menuPrincipal(String cpfUsuario) {
+    public static void menuPrincipal(String cpfUsuario) throws SQLException {
         Scanner input = new Scanner(System.in);
         int opcao = -1;
 
@@ -39,67 +43,67 @@ public class Gerente {
             
             switch(opcao){
                 case 1:
-                    //Chamada de método
+                    listaFuncionarios();
                     break;
 
                 case 2:
-                    //Chamada de método
+                    listaCardapio();
                     break;
                 
                 case 3:
-                    //Chamada de método
+                    listaEstoque();
                     break;
                     
                 case 4:
-                    //Chamada de método
+                    listaFornecedores();
                     break;
                     
                 case 5:
-                    //Chamada de método
+                    contrataFuncionario();
                     break;
 
                 case 6:
-                    //Chamada de método
+                    pagaFuncionario();
                     break;
 
                 case 7:
-                    //Chamada de método
+                    consultaProdutividade();
                     break;
                 
                 case 8:
-                    //Chamada de método
+                    demiteFuncionario();
                     break;
                     
                 case 9:
-                    //Chamada de método
+                    cadastraProduto();
                     break;
                     
                 case 10:
-                    //Chamada de método
+                    removeProduto();
                     break;
 
                 case 11:
-                    //Chamada de método
+                    compraEstoque();
                     break;
 
                 case 12:
-                    //Chamada de método
+                    consultaReceitas();
                     break;
                 
                 case 13:
-                    //Chamada de método
+                    consultaDespesaEstq();
                     break;
                     
                 case 14:
-                    //Chamada de método
+                    consultaDespesaRh();
                     break;
                     
                 case 15:
-                    //Chamada de método
+                    consultaBalanco();
                     break;
 
                 case 16:
-                    //Chamada de método
+                    listarPreferencias();
                     break;
 
                 case 0:
@@ -129,65 +133,106 @@ public class Gerente {
     }
 
     
-    public static void listaFornecedores() {
-        System.out.println("Opcao nao implementada!");
+    public static void listaFornecedores() throws SQLException {
+        Fornecedor.listaFornecedores();
     }
 
-    
+    //#########################################################################
     public static void contrataFuncionario() {
         System.out.println("Opcao nao implementada!");
     }
 
     
-    public static void pagaFuncionario() {
-        System.out.println("Opcao nao implementada!");
+    public static void pagaFuncionario() throws SQLException {
+        Scanner input = new Scanner(System.in);
+        String cpfFuncionario;
+
+        System.out.printf("Insira o CPF do funcionario: ");
+        cpfFuncionario = input.nextLine();
+
+        CustoRH.insereBanco(cpfFuncionario);
+
+        System.out.printf("\nO salario do funcionario %s, CPF %s, foi pago!\n",
+                            Funcionario.buscaNome(cpfFuncionario), cpfFuncionario);
+
+        //input.close();
     }
 
-    
+    //#########################################################################
     public static void consultaProdutividade() {
         System.out.println("Opcao nao implementada!");
     }
 
     
-    public static void demiteFuncionario() {
-        System.out.println("Opcao nao implementada!");
+    public static void demiteFuncionario() throws SQLException {
+        Scanner input = new Scanner(System.in);
+        String cpfFuncionario;
+        String nomeFuncionario;
+
+        System.out.printf("Insira o CPF do funcionario: ");
+        cpfFuncionario = input.nextLine();
+        nomeFuncionario = Funcionario.buscaNome(cpfFuncionario);
+
+        Funcionario.removeBanco(cpfFuncionario);;
+
+        System.out.printf("\nO funcionario %s, CPF %s, foi demitido!\n",
+                            nomeFuncionario, cpfFuncionario);
+
+        //input.close();
     }
 
-    
+    //#########################################################################
     public static void cadastraProduto() {
         System.out.println("Opcao nao implementada!");
     }
 
-    
+    //#########################################################################
     public static void removeProduto() {
         System.out.println("Opcao nao implementada!");
     }
 
     
-    public static void compraEstoque() {
-        System.out.println("Opcao nao implementada!");
+    public static void compraEstoque() throws SQLException {
+        Scanner input = new Scanner(System.in);
+        CustoEstoque custo = new CustoEstoque();
+
+        System.out.printf("Insira o CNPJ do fornecedor: ");
+        custo.setCnpjFornedor(input.nextLine());
+
+        System.out.printf("Insira o codigo do ingrediente: ");
+        custo.setCodigoIngrediente(Integer.parseInt(input.nextLine()));
+
+        System.out.printf("Insira a quantidade dos ingredientes: ");
+        custo.setQtdIngredientes(Integer.parseInt(input.nextLine()));
+
+        System.out.printf("Insira o preco unitario: ");
+        custo.setPrecoUnitario(Double.parseDouble(input.nextLine()));
+        
+        custo.insereBanco();
+
+        //input.close();
     }
 
     
-    public static void consultaReceitas() {
-        System.out.println("Opcao nao implementada!");
+    public static void consultaReceitas() throws SQLException {
+        Pagamento.listaPagamentos();;
     }
 
     
-    public static void consultaDespesaEstq() {
-        System.out.println("Opcao nao implementada!");
+    public static void consultaDespesaEstq() throws SQLException {
+        CustoEstoque.listaCustos();
     }
 
     
-    public static void consultaDespesaRh() {
-        System.out.println("Opcao nao implementada!");
+    public static void consultaDespesaRh() throws SQLException {
+        CustoRH.listaCustos();
     }
 
-    
+    //#########################################################################
     public static void consultaBalanco() {
         System.out.println("Opcao nao implementada!");
     }
-
+    //#########################################################################
     public static void listarPreferencias() {
         System.out.println("Opcao nao implementada!");
     }
