@@ -2,9 +2,21 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/iText/io-7.1.2.jar"/>
-	<classpathentry kind="lib" path="lib/iText/kernel-7.1.2.jar"/>
-	<classpathentry kind="lib" path="lib/iText/layout-7.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/iText/io-7.0.7.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/SistemaRestaurante/lib/iText/io-7.0.7-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/iText/kernel-7.0.7.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/SistemaRestaurante/lib/iText/kernel-7.0.7-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/iText/layout-7.0.7.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/SistemaRestaurante/lib/iText/layout-7.0.7-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/Postgre/postgresql.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
