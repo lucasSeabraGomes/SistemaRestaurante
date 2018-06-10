@@ -35,6 +35,7 @@ public class Gerente {
             System.out.println("[14] Consultar despesas funcionarios.");
             System.out.println("[15] Consultar balanco.");
             System.out.println("[16] Listar preferencias de clientes.");
+            System.out.println("[17] Cadastrar novo fornecedor.");
             System.out.println("[0] Sair.");
             System.out.println();
             
@@ -104,6 +105,9 @@ public class Gerente {
 
                 case 16:
                     listarPreferencias();
+                    break;
+                case 17:
+                    cadastrarFornecedor();
                     break;
 
                 case 0:
@@ -235,5 +239,26 @@ public class Gerente {
     //#########################################################################
     public static void listarPreferencias() {
         System.out.println("Opcao nao implementada!");
+    }
+     public static void cadastrarFornecedor() throws SQLException {
+        Fornecedor este=new Fornecedor();
+         Scanner input = new Scanner(System.in);
+         String novo;
+        System.out.println("Digite o cnpj do novo fornecedor");
+         novo=input.nextLine();
+        este.setCnpj(novo) ;
+        System.out.println("Digite a Razao Social do novo fornecedor");
+         novo=input.nextLine();
+        este.setRazaoSocial(novo);
+        System.out.println("Digite o telefone do novo fornecedor");
+         novo=input.nextLine();
+          este.setTelefone(novo);
+        System.out.println("Digite o endereco do novo fornecedor");
+         novo=input.nextLine();
+        este.setEndereco(novo);
+        System.out.println("Digite o email do novo fornecedor");
+         novo=input.nextLine();
+         este.setEmail(novo);
+         este.insereBanco();
     }
 }
