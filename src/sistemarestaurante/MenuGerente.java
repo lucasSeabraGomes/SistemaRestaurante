@@ -1,6 +1,6 @@
 package sistemarestaurante;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class MenuGerente {
     public static void menuPrincipal(String cpfUsuario) {
@@ -29,7 +29,7 @@ public class MenuGerente {
         System.out.print("Digite a opção desejada: ");
         opcao = Integer.parseInt(input.nextLine());
 
-        while(opcao){
+        while(opcao!=0){
             switch(opcao){
                 case 1:
                     //Chamada de método
@@ -96,7 +96,7 @@ public class MenuGerente {
                     break;
 
                 case 0:
-                    return
+                    return;
                 
                 default:
                     System.out.println("Opcao invalida!");
@@ -107,112 +107,112 @@ public class MenuGerente {
 
 
     public static void listaFuncionarios() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void listaCardapio() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void listaEstoque() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void listaFornecedores() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void contrataFuncionario() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void pagaFuncionario() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void consultaProdutividade() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void demiteFuncionario() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void cadastraProduto() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void removeProduto() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void compraEstoque() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void consultaReceitas() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void consultaDespesaEstq() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void consultaDespesaRh() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     
     public static void consultaBalanco() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     public static void listarPreferencias() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 }

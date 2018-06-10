@@ -18,6 +18,7 @@ import sistemarestaurante.ferramentas.ConnectionFactory;
  */
 public class Fornecedor {
     private String cnpj;
+    private String nomeFornecedor;
     private String enderecoFornecedor;
     private String emailFornecedor;
     private String telefoneFornecedor;

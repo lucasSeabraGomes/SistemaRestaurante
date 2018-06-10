@@ -22,7 +22,7 @@ public class MenuGarcom {
         System.out.print("Digite a opção desejada: ");
         opcao = Integer.parseInt(input.nextLine());
 
-        while(opcao){
+        while(opcao!=0){
             switch(opcao){
                 case 1:
                     //Chamada de método
@@ -45,7 +45,7 @@ public class MenuGarcom {
                     break;
 
                 case 0:
-                    return
+                    ;
                 
                 default:
                     System.out.println("Opcao invalida!");
@@ -55,9 +55,9 @@ public class MenuGarcom {
     }
 
     public static void recepcionaCliente() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
     public static void realizaPedido(String cpfGarcom, int codigoMesa) throws SQLException{
@@ -95,22 +95,22 @@ public class MenuGarcom {
 
 
     public static void consultaPedidos() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
 
     public static void entregaPedido(int codPedido) {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
 
     public static void recebePagamento(int codPedido) {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 }

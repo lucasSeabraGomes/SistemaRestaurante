@@ -13,7 +13,7 @@ public class Pagamento {
     
     void CriarNotaEmTxt()throws IOException, SQLException { //Correção do erro referente à SQLException
         Produto este=new Produto();
-        float resultado=0;
+        double resultado=0;
         File file = new File( "c:\\NotaFiscal.txt" );
         if(file.exists())
         {
@@ -26,7 +26,7 @@ public class Pagamento {
          for(int i=0;i<this.codigoDosProdutosPedidos.length;i++)//"Correção" na declaração do laço
          {
              gravarArq.printf("%dx%s=%f\n",this.quantiaDeProdutos[i],este.buscaNome(this.codigoDosProdutosPedidos[i]),this.quantiaDeProdutos[i]*este.buscaPreco(this.codigoDosProdutosPedidos[i]));
-             resultado=this.quantiaDeProdutos[i]*este.buscaPreco(this.codigoDosProdutosPedidos[i]);//Exclusão de uma virgula (colocada por engano imagino) e correção da variável
+             resultado=this.quantiaDeProdutos[i]*Produto.buscaPreco(this.codigoDosProdutosPedidos[i]);//Exclusão de uma virgula (colocada por engano imagino) e correção da variável
          }
          gravarArq.printf("total:%f",resultado);
          gravarArq.printf("%s",this.mensagem);

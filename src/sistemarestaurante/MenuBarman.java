@@ -3,7 +3,6 @@ package sistemarestaurante;
 import java.util.Scanner;
 
 public class MenuBarman {
-    public static void menuPrincipal(String cpfUsuario) {
         public static void menuPrincipal(String cpfUsuario) {
             Scanner input = new Scanner(System.in);
             int opcao;
@@ -17,7 +16,7 @@ public class MenuBarman {
             System.out.print("Digite a opção desejada: ");
             opcao = Integer.parseInt(input.nextLine());
     
-            while(opcao){
+            while(opcao!=0){
                 switch(opcao){
                     case 1:
                         //Chamada de método
@@ -32,7 +31,7 @@ public class MenuBarman {
                         break;
                         
                     case 0:
-                        return
+                        return;
                     
                     default:
                         System.out.println("Opcao invalida!");
@@ -43,23 +42,22 @@ public class MenuBarman {
     
     
         public static void consultaPendentes() {
-            Scanner input = new Scanner();
+            Scanner input = new Scanner(System.in);
     
-            System.out.println("")
+            System.out.println("");
         }
     
     
         public static void registraPreparo() {
-            Scanner input = new Scanner();
+            Scanner input = new Scanner(System.in);
     
-            System.out.println("")
+            System.out.println("");
         }
     
     
         public static void consultaEstoque() {
-            Scanner input = new Scanner();
+            Scanner input = new Scanner(System.in);
     
-            System.out.println("")
+            System.out.println("");
         }
-    }
 }

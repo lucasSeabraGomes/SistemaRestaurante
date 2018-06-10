@@ -1,7 +1,7 @@
 package sistemarestaurante;
 
 import java.sql.SQLException;
-
+import java.util.Scanner;
 import sistemarestaurante.ferramentas.Login;
 
 public class Main {

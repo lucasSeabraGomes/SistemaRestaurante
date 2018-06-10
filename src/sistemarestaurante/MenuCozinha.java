@@ -16,7 +16,7 @@ public class MenuCozinha {
         System.out.print("Digite a opção desejada: ");
         opcao = Integer.parseInt(input.nextLine());
 
-        while(opcao){
+        while(opcao!=0){
             switch(opcao){
                 case 1:
                     //Chamada de método
@@ -31,7 +31,7 @@ public class MenuCozinha {
                     break;
                     
                 case 0:
-                    return
+                    return;
                 
                 default:
                     System.out.println("Opcao invalida!");
@@ -42,22 +42,22 @@ public class MenuCozinha {
 
 
     public static void consultaPendentes() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
 
     public static void registraPreparo() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 
 
     public static void consultaEstoque() {
-        Scanner input = new Scanner();
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("")
+        System.out.println("");
     }
 }
