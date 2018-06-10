@@ -75,7 +75,31 @@ public class Pagamento {
             con.close();
         }
 	}
-	
+    
+
+    public static double buscaReceitaTotal() throws SQLException {
+		Connection con = new ConnectionFactory().getConexao();
+        String sql = "SELECT SUM(valor) FROM pagamentos;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        double custoTotal = 0.0;
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                custoTotal = rs.getFloat("sum");
+            }
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+        return custoTotal;
+	}
+    
 
     /**
 	 * GET's e SET's

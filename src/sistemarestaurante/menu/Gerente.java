@@ -181,14 +181,57 @@ public class Gerente {
         //input.close();
     }
 
-    //#########################################################################
-    public static void cadastraProduto() {
-        System.out.println("Opcao nao implementada!");
+
+    public static void cadastraProduto() throws SQLException {
+        Scanner input = new Scanner(System.in);
+        Produto produto = new Produto();
+        int codigoIngrediente;
+        int qtdIngrediente;
+        boolean cadastroConcluido = false;
+        
+        Ingrediente.imprimeEstoque();
+
+        System.out.print("Insira o nome do produto: ");
+        produto.setNome(input.nextLine());
+        System.out.print("Insira o preco do produto: ");
+        produto.setPreco(Double.parseDouble(input.nextLine()));
+        
+        while(!cadastroConcluido) {
+            System.out.print("Digite o codigo do ingrediente ou \"0\" para sair: ");
+            codigoIngrediente = Integer.parseInt(input.nextLine());
+
+            if(codigoIngrediente > 0){
+                System.out.printf("Digite a quantidade do ingrediente %s: ", 
+                                    Ingrediente.buscaNome(codigoIngrediente));
+                qtdIngrediente = Integer.parseInt(input.nextLine());
+
+                produto.addInfoIngredientes(codigoIngrediente, qtdIngrediente);
+            }
+            else{
+                cadastroConcluido = true;
+            }
+        }
+
+        produto.insereBanco();
+        //input.close();
     }
 
-    //#########################################################################
-    public static void removeProduto() {
-        System.out.println("Opcao nao implementada!");
+
+    public static void removeProduto() throws SQLException {
+        Scanner input = new Scanner(System.in);
+        int codProduto;
+        String nomeProduto;
+
+        System.out.printf("Insira o codigo do produto: ");
+        codProduto = Integer.parseInt(input.nextLine());
+        nomeProduto = Produto.buscaNome(codProduto);
+
+        Produto.removeBanco(codProduto);;
+
+        System.out.printf("\nO produto %s, codigo %d, foi removido do cardapio!\n",
+                            nomeProduto, codProduto);
+
+        //input.close();
     }
 
     
@@ -228,10 +271,18 @@ public class Gerente {
         CustoRH.listaCustos();
     }
 
-    //#########################################################################
-    public static void consultaBalanco() {
-        System.out.println("Opcao nao implementada!");
+
+    public static void consultaBalanco() throws SQLException {
+        double custosEstoque = CustoEstoque.buscaCustoTotal();
+        double custosRH = CustoRH.buscaCustoTotal();
+        double receitaTotal = Pagamento.buscaReceitaTotal();
+        double balanco = receitaTotal - custosEstoque - custosRH;
+
+        System.out.printf("\n\n|Custos de Estoque - Custos de RH - Total de Receitas - Balanço|\n");
+        System.out.printf("|R$ %.2f\t- R$ %.2f\t- R$ %.2f\t- R$ %.2f|\n",
+                            custosEstoque, custosRH, receitaTotal, balanco);
     }
+    
     //#########################################################################
     public static void listarPreferencias() {
         System.out.println("Opcao nao implementada!");

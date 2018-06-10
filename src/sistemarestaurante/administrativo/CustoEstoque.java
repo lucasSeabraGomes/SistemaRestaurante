@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,7 +25,7 @@ public class CustoEstoque {
 	public void insereBanco() throws SQLException {
         Connection con = new ConnectionFactory().getConexao();
 		String sql = "INSERT INTO custos_estoque (cnpj_fornecedor, " +
-						"cod_ingrediente, qtd_ingrediente, preco_unitario) " +
+						"cod_ingrediente, qtd_ingredientes, preco_unitario) " +
 						"VALUES (?,?,?,?);";
 		PreparedStatement stmt = con.prepareStatement(sql);
 		
@@ -36,7 +35,8 @@ public class CustoEstoque {
 		stmt.setDouble(4, precoUnitario);
 
         try {
-            stmt.executeUpdate();
+			stmt.executeUpdate();
+			Ingrediente.aumentaQtdEstoque(codigoIngrediente, qtdIngredientes);
         }
         catch(SQLException e) {
             throw new RuntimeException(e);
@@ -84,6 +84,29 @@ public class CustoEstoque {
             stmt.close();
             con.close();
         }
+	}
+
+	public static double buscaCustoTotal() throws SQLException {
+		Connection con = new ConnectionFactory().getConexao();
+        String sql = "SELECT SUM(qtd_ingredientes * preco_unitario) FROM custos_estoque;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        double custoTotal = 0.0;
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                custoTotal = rs.getFloat("sum");
+            }
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+        return custoTotal;
 	}
 	
 

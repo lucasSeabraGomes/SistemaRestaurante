@@ -133,6 +133,28 @@ public class Ingrediente{
         }
         return nome;
     }
+
+
+    public static void aumentaQtdEstoque(int codigo, int qtd) throws SQLException{
+		Connection con = new ConnectionFactory().getConexao();
+        String sql = "UPDATE ingredientes SET qtd_estoque = qtd_estoque + ? " +
+                            "WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        
+        stmt.setInt(1, qtd);
+        stmt.setInt(2, codigo);
+
+        try {
+            stmt.executeUpdate();
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+	}
     
 	
     public static void diminuiQtdEstoque(int codigo, int qtd) throws SQLException{

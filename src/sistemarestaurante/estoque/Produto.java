@@ -123,6 +123,86 @@ public class Produto{
     }
 
 
+    /**
+     * Métodos de acesso ao banco de dados
+     */
+    public void insereBanco() throws SQLException {
+        Connection con = new ConnectionFactory().getConexao();
+        String sql = "INSERT INTO produtos (nome, preco, bebida) " +
+                        "VALUES(?, ?, ?);";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        
+        stmt.setString(1, nome);
+        stmt.setDouble(2, preco);
+        stmt.setBoolean(3, bebida);
+
+        try {
+            stmt.executeUpdate();
+            insereInfoIngredientes(listaIngredientes, qtdCadaIngrediente);
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+    }
+
+
+    public void insereInfoIngredientes(ArrayList<Integer> listaIngredientes, 
+                                        ArrayList<Integer> qtdCadaIngrediente) 
+                                        throws SQLException {
+
+        Connection con = new ConnectionFactory().getConexao();
+        int codProduto = buscaUltimoProduto();
+        
+        for(int i = 0; i < listaIngredientes.size(); i++) {
+            String sql = "INSERT INTO produto_ingrediente (cod_produto, cod_ingrediente, qtd_ingrediente) " +
+                            "VALUES(?, ?, ?);";
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, codProduto);
+            stmt.setInt(2, listaIngredientes.get(i));
+            stmt.setInt(3, qtdCadaIngrediente.get(i));
+
+            try {
+                stmt.executeUpdate();
+            }
+            catch(SQLException e) {
+                throw new RuntimeException(e);
+            }
+            finally {
+                stmt.close();
+            }
+        }
+    }
+
+
+    public int buscaUltimoProduto() throws SQLException {
+        Connection con = new ConnectionFactory().getConexao();
+        String sql = "SELECT codigo FROM produtos ORDER BY codigo DESC " +
+                        "FETCH FIRST 1 ROW ONLY;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        int codPedido = 0;
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+            
+            if(rs.next()) {
+                codPedido = rs.getInt("codigo");
+            }
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+        }
+        return codPedido;
+    }
+
+
     public static String buscaNome(int codigo) throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
         String sql = "SELECT nome FROM produtos WHERE codigo = ?;";
@@ -154,7 +234,7 @@ public class Produto{
         Connection con = new ConnectionFactory().getConexao();
         String sql = "SELECT preco FROM produtos WHERE codigo = ?;";
         PreparedStatement stmt = con.prepareStatement(sql);
-        double preco = (float) 0.0;
+        double preco = 0.0;
 
         stmt.setInt(1, codigo);
 
@@ -174,6 +254,26 @@ public class Produto{
             con.close();
         }
         return preco;
+    }
+
+
+    public static void removeBanco(int codigo) throws SQLException {
+        Connection con = new ConnectionFactory().getConexao();
+        String sql = "DELETE FROM produtos WHERE codigo = ?;";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        
+        stmt.setInt(1, codigo);
+
+        try {
+            stmt.executeUpdate();
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
     }
 
 
@@ -198,7 +298,7 @@ public class Produto{
     public double getPreco() {
 		return preco;
 	}
-    public void setPreco(float preco) {
+    public void setPreco(double preco) {
 		this.preco = preco;
 	}
     
