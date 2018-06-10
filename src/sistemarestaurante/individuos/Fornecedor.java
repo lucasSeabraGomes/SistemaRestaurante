@@ -47,6 +47,34 @@ public class Fornecedor {
             con.close();
         }
     }
+    //metodo que mostra todos os fornecedores
+    public static void imprimeFornecedores() throws SQLException{
+        Connection con = new ConnectionFactory().getConexao();
+        String query = "SELECT cnpj, telefone, endereco,email FROM fornecedores;";
+        PreparedStatement stmt = con.prepareStatement(query);
+        System.out.printf("Fornecedores cadastrados:\n");
+        try {
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                String cnpj= rs.getString("cnpj");
+                String telefone= rs.getString("telefone");
+                String endereco= rs.getString("endereco");
+                 String email= rs.getString("email");
+;
+
+                System.out.printf("cnpj:%s  telefone:%s   endereco:%s  email:%s\n", cnpj, telefone, endereco,email);
+            }
+
+        }
+        catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            stmt.close();
+            con.close();
+        }
+    }
+
     /**
      * @return the cnpj
      */
