@@ -1,4 +1,4 @@
-package sistemarestaurante.servico;
+package sistemarestaurante.administrativo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,27 +7,28 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import sistemarestaurante.estoque.Ingrediente;
 import sistemarestaurante.ferramentas.ConnectionFactory;
+import sistemarestaurante.individuos.Funcionario;
 
-public class Pagamento {
+public class CustoRH {
     private int codigo;
-    private int codigoPedido;
+    private int codigoFuncionario;
     private Date data;
-    private double valor;
+    private double salario;
 	
 
 	/**
-     * Métodos de acesso ao banco de dados
-     */
-    public static void insereBanco(int codPedido) throws SQLException {
+	 * Métodos de acesso ao banco de dados
+	 */
+	public static void insereBanco(String cpfFuncionario) throws SQLException {
         Connection con = new ConnectionFactory().getConexao();
-        String sql = "INSERT INTO pagamentos " +
-                            "(cod_pedido, valor) " +
-                            "VALUES(?, ?);";
-        PreparedStatement stmt = con.prepareStatement(sql);
-        
-        stmt.setInt(1, codPedido);
-        stmt.setDouble(2, Pedido.buscaConta(codPedido));
+		String sql = "INSERT INTO custos_rh (cpf_funcionario, salario) " +
+						"VALUES (?,?);";
+		PreparedStatement stmt = con.prepareStatement(sql);
+		
+		stmt.setString(1, cpfFuncionario);
+		stmt.setDouble(2, Funcionario.buscaSalario(cpfFuncionario));
 
         try {
             stmt.executeUpdate();
@@ -39,32 +40,31 @@ public class Pagamento {
             stmt.close();
             con.close();
         }
-    }
+	}
+	
 
-
-    public static void listaPagamentos() throws SQLException{
+	public static void listaCustos() throws SQLException{
         Connection con = new ConnectionFactory().getConexao();
-        String sql = "SELECT data, codigo, cod_pedido, valor " +
-                        "FROM pagamentos " +
-						"ORDER BY data DESC, codigo ASC;";
+		String sql = "SELECT data, cpf_funcionario, salario " +
+						"FROM custos_rh " +
+						"ORDER BY data DESC, cpf_funcionario ASC;";
 		PreparedStatement stmt = con.prepareStatement(sql);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
             ResultSet rs = stmt.executeQuery();
 
-			System.out.printf("\n\n|Data\t\t- Codigo do pagamento - Codigo do pedido - Valor|\n");
+			System.out.printf("\n\n|Data\t- CPF\t\t- Nome do funcionario\t- Salario|\n");
 
             while(rs.next()){
 				Date data = rs.getDate("data");
-                String dataFormatada = sdf.format(data);
-                int codPagamento = rs.getInt("codigo");
-                int codPedido = rs.getInt("cod_pedido");
-                double valor = rs.getDouble("valor");
+				String dataFormatada = sdf.format(data);
+				String cpf = rs.getString("cpf_funcionario");
+				String nome = Funcionario.buscaNome(cpf);
+				double salario = rs.getDouble("salario");
 
-                System.out.printf("|%s\t- %d\t\t\t- %d\t\t- R$ %.2f|\n", 
-                                    dataFormatada, codPagamento, 
-                                    codPedido, valor);
+                System.out.printf("|%s\t- %s\t\t- %s\t- R$ %.2f|\n", 
+									dataFormatada, cpf, nome, salario);
             }
         }
         catch(SQLException e) {
@@ -75,11 +75,11 @@ public class Pagamento {
             con.close();
         }
 	}
-    
 
-    public static double buscaReceitaTotal() throws SQLException {
+
+	public static double buscaCustoTotal() throws SQLException {
 		Connection con = new ConnectionFactory().getConexao();
-        String sql = "SELECT SUM(valor) FROM pagamentos;";
+        String sql = "SELECT SUM(salario) FROM custos_rh;";
         PreparedStatement stmt = con.prepareStatement(sql);
         double custoTotal = 0.0;
 
@@ -99,7 +99,7 @@ public class Pagamento {
         }
         return custoTotal;
 	}
-    
+	
 
     /**
 	 * GET's e SET's
@@ -112,12 +112,12 @@ public class Pagamento {
 		this.codigo = codigo;
 	}
 
-    // Variavel codigoPedido
-	public int getCodigoPedido() {
-		return codigoPedido;
+    // Variavel codigoFuncionario
+	public int getCodigoFuncionario() {
+		return codigoFuncionario;
 	}
-	public void setCodigoPedido(int codigoPedido) {
-		this.codigoPedido = codigoPedido;
+	public void setCodigoFuncionario(int codigoFuncionario) {
+		this.codigoFuncionario = codigoFuncionario;
 	}
 
     // Variavel data
@@ -128,11 +128,11 @@ public class Pagamento {
 		this.data = data;
 	}
 
-    // Variavel valor
-	public double getValor() {
-		return valor;
+    // Variavel salario
+	public double getSalario() {
+		return salario;
 	}
-	public void setValor(double valor) {
-		this.valor = valor;
+	public void setSalario(double salario) {
+		this.salario = salario;
 	}
 }
