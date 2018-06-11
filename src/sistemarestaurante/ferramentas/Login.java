@@ -39,7 +39,7 @@ public class Login {
                 System.out.printf("Seja bem vindo, %s!\n", getNome());
             }
             else{
-                System.out.println("Usuario/senha nao localizados!");
+                System.out.println("\nUsuario/senha nao localizados!");
                 setCodigoCargo(0);
             }
         }
