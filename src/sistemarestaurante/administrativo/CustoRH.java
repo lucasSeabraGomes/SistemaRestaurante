@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import sistemarestaurante.estoque.Ingrediente;
 import sistemarestaurante.ferramentas.ConnectionFactory;
 import sistemarestaurante.individuos.Funcionario;
 

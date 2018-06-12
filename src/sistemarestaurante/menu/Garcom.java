@@ -62,14 +62,17 @@ public class Garcom {
         Cliente cliente = new Cliente();
         Scanner input = new Scanner(System.in);
         String cpf = null;
+        int mesaLivre = Mesa.buscaMesaLivre();
 
         System.out.print("Insira o CPF do cliente: ");
         cpf = input.nextLine();
 
         if(cpf.length() < 1) {
+            Mesa.ocupaMesa(mesaLivre);
         }
         else if(! Cliente.verifCadastroExiste(cpf)) {
             cadastraCliente(cpf); 
+            Mesa.ocupaMesa(mesaLivre, cpf);
         }
         //input.close();
     }
@@ -135,25 +138,14 @@ public class Garcom {
     public static void realizaPedido(String cpfGarcom) throws SQLException{
         Scanner input = new Scanner(System.in);
         Pedido pedido = new Pedido();
-        int codMesa;
         int codigoProduto;
         int qtdProduto;
         boolean pedidoConcluido = false;
         
         pedido.setCpfGarcom(cpfGarcom);
 
-        while(pedido.getCodigoMesa() < 1) {
-            System.out.print("Insira o numero da mesa: ");
-            codMesa = Integer.parseInt(input.nextLine());
-            
-            if(Mesa.verifMesaOcupada(codMesa)) {
-                System.out.printf("A mesa %d esta ocupada.\n", codMesa);
-            }
-            else {
-                pedido.setCodigoMesa(codMesa);
-            }
-        }
-
+        System.out.print("Insira o numero da mesa: ");
+        pedido.setCodigoMesa(Integer.parseInt(input.nextLine()));
         System.out.print("Insira o CPF do cliente: ");
         pedido.setCpfCliente(input.nextLine());
         Produto.imprimeProdutos();
@@ -180,7 +172,7 @@ public class Garcom {
 
     public static void consultaPedidos(String cpfGarcom) throws SQLException {
         Connection con = new ConnectionFactory().getConexao();
-        String sql = "SELECT p.codigo, p.cod_mesa , p.preco_total " +
+        String sql = "SELECT p.codigo, p.cod_mesa " +
                             "FROM pedidos AS p " +
                             "INNER JOIN (SELECT cod_pedido FROM pedido_produto " +
                                         "WHERE cod_pedido " +
@@ -196,14 +188,13 @@ public class Garcom {
         try {
             ResultSet rs = stmt.executeQuery();
 
-            System.out.printf("\n\n|Numero do pedido - Numero da mesa - Preco|\n");
+            System.out.printf("\n\n|Numero do pedido - Numero da mesa|\n");
 
             while(rs.next()){
                 int codigoPedido = rs.getInt("codigo");
                 int codigoMesa = rs.getInt("cod_mesa");
-                double precoTotal = rs.getDouble("preco_total");
                 
-                System.out.printf("|%d\t\t- %d\t\t- %.2f|\n", codigoPedido, codigoMesa, precoTotal);
+                System.out.printf("|%d\t\t- %d\t\t|\n\n", codigoPedido, codigoMesa);
             }
         }
         catch(SQLException e) {
