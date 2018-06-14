@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import sistemarestaurante.estoque.Produto;
 import sistemarestaurante.ferramentas.ConnectionFactory;
@@ -216,16 +219,20 @@ public class Garcom {
     }
 
     
-    public static void recebePagamento(String cpfGarcom) throws SQLException {
+    public static void recebePagamento(String cpfGarcom) throws SQLException throws IOException {
         Scanner input = new Scanner(System.in);
         int codigoPedido;
-
+        double resultado;
+        FileWriter arq = new FileWriter("C:\\Users\\Public\\Documents\\notaFiscal.txt");
+        PrintWriter gravarArq = new PrintWriter(arq);
+        gravarArq.printf("Comprovante de pagamento\n O Comilão:\n");
         System.out.print("Digite o número do pedido: ");
         codigoPedido = Integer.parseInt(input.nextLine());
 
         Pagamento.insereBanco(codigoPedido);
         Pedido.marcaPedidoPago(codigoPedido);
-        
+        gravarArq.printf("total:%f\n Volte Sempre", resultado);
+        arq.close();
         System.out.printf("\nFoi recebido R$ %.2f do pedido de número %d.\n\n", 
                             Pedido.buscaConta(codigoPedido), codigoPedido);
 
