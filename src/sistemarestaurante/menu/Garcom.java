@@ -223,6 +223,9 @@ public class Garcom {
         Scanner input = new Scanner(System.in);
         int codigoPedido;
         double resultado=0;
+        String nome;
+        int qtd;
+        double preco;
         FileWriter arq = new FileWriter("C:\\Users\\Public\\Documents\\notaFiscal.txt");
         PrintWriter gravarArq = new PrintWriter(arq);
         gravarArq.printf("Comprovante de pagamento\n O Comilão:\n");
@@ -246,8 +249,11 @@ public class Garcom {
         ORDER BY produto;
         Pagamento.insereBanco(codigoPedido);
         Pedido.marcaPedidoPago(codigoPedido);
-        gravarArq.printf("%i x %s =%f", pp.qtd_produto,pr.nome,preco_total);
-        resultado=resultado+preco_total;
+        nome= rs.getString("produto");
+        qtd=rs.getInt("quantidade");
+        preco=rs.getDouble("preco_total");
+        gravarArq.printf("%i x %s =%f", qtd,nome,preco);
+        resultado=resultado+preco;
         
         
         gravarArq.printf("total:%f\n Volte Sempre", resultado);
